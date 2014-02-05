@@ -21,12 +21,12 @@ public class ServerTester extends TestCase{
 	// This test will see if the message "hi" is being received
 	@Test
 	public void testGetServerMessage() throws Exception {
-		String str = new String("hi");
+		String str = new String("Client sent: hi");
 		assertEquals("hi", getServerMessage(str));
 	}
 	
 	public void testGetServerMessage2() throws Exception {
-		String str = new String("Charles");
+		String str = new String("Client sent: Charles");
 		assertEquals("Charles", getServerMessage(str));
 	}
 	
