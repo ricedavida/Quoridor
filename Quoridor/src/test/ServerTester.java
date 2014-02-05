@@ -31,7 +31,7 @@ public class ServerTester extends TestCase{
 	}
 	
 	private String getServerMessage(String str) {
-		return str;
+		return "Server sent: " + str;
 	}
 	/**
 	 * @param args
