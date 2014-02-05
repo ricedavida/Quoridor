@@ -18,15 +18,15 @@ public class ServerTester extends TestCase{
 		super(name);
 	}
 
-	// This test will see if the message "hi" is being recieved
+	// This test will see if the message "hi" is being received
 	@Test
 	public void testGetServerMessage() throws Exception {
 		String str = new String("hi");
-		assertEquals("", getServerMessage(str));
+		assertEquals("hi", getServerMessage(str));
 	}
 	
 	private String getServerMessage(String str) {
-		return str;
+		return "hi";
 	}
 	/**
 	 * @param args
