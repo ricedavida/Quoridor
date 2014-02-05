@@ -25,6 +25,11 @@ public class ServerTester extends TestCase{
 		assertEquals("hi", getServerMessage(str));
 	}
 	
+	public void testGetServerMessage2() throws Exception {
+		String str = new String("Charles");
+		assertEquals("Charles", getServerMessage(str));
+	}
+	
 	private String getServerMessage(String str) {
 		return "hi";
 	}
