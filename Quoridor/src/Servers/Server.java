@@ -49,11 +49,11 @@ public class Server {
 
                 String clientMessage = "";
                 
-                // this is where the server will take in a clinet String,
+                // this is where the server will take in a client String,
                 // reverse it and send it back
                 while (cin.hasNextLine()) {
                     clientMessage = cin.nextLine();
-                    cout.println(reverseString(clientMessage));
+                    cout.println("Server sent: " + clientMessage);
                     }
 
                 cout.close();

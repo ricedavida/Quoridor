@@ -41,9 +41,8 @@ public class Client {
     public Client(String machineName, int portNumber) {
         this.machineName = machineName;
         this.portNumber = portNumber;
-        this.keyboard = new Scanner(System.in);
+        
     }
-
 
     public void run() {
         try {
@@ -78,6 +77,32 @@ public class Client {
             // there was a standard input/output error (lower-level)
             ioe.printStackTrace();
             System.exit(1);
+        }
+    }
+    
+    public String Respond(String str) {
+        try {
+            Socket socket = new Socket(machineName, portNumber);
+            PrintStream sout = new PrintStream(socket.getOutputStream());
+            Scanner sin = new Scanner(socket.getInputStream());
+            
+            sout.println(str);
+            //sin.nextLine();
+            String ret = sin.nextLine();
+            sout.close();
+            sin.close();
+            return ret;
+            
+        } catch (UnknownHostException uhe) {
+            // the host name provided could not be resolved
+            uhe.printStackTrace();
+            System.exit(1);
+            return null;
+        } catch (IOException ioe) {
+            // there was a standard input/output error (lower-level)
+            ioe.printStackTrace();
+            System.exit(1);
+            return null;
         }
     }
 
