@@ -27,5 +27,8 @@ public class Board {
 	public int getSizeX(){
 		return rows;
 	}
+	public int getSizeY(){
+		return cols;
+	}
 
 }
