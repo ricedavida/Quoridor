@@ -1,0 +1,32 @@
+Authors:
+David Rice
+Sean Kelleher
+Edward Pryor
+
+
+
+
+Fried Rice coding standards:
+method names                -                   camel case (example: theBigDig())
+curly brace placement       -                   end of line (example: theBigDig() {)
+if statement/loop spacing   -                   space between things (example: if ( testone == testtwo ) {)
+Final variables             -                   at top of file and ALL CAPS
+main location               -                   at the bottom of the file
+
+use correct public/private/protected fields
+force use of setters/getters (accessors/mutators)
+
+comments:
+    - top of document (template)
+      /* 
+       * name of file:
+       * Authors: <list of authors, comma seperated>
+       * Last updated: <date> <time> <by author name>
+       * <Detailed description of file, could be one or more paragraphs>
+       */
+    
+    - Method commenting
+        // <one or more lines like this>
+
+    - Working area
+      /* FIX ME */
