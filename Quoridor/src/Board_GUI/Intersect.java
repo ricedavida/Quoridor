@@ -6,7 +6,7 @@ public class Intersect extends JButton {
 	
 	public Intersect(String n){
 		super(n);
-		setPreferredSize(new Dimension(3,3));
+		setPreferredSize(new Dimension(4,12));
 	}
 
 }
