@@ -86,7 +86,11 @@ public class Client {
             PrintStream sout = new PrintStream(socket.getOutputStream());
             Scanner sin = new Scanner(socket.getInputStream());
             
-            sout.println(str);
+            for(int i=0 ; i < 100000 ; i++) {
+            	sout.println(str);
+            	System.out.println("here" + str);
+            }
+            
             //sin.nextLine();
             String ret = sin.nextLine();
             sout.close();
@@ -114,38 +118,11 @@ public class Client {
     }
 
     public static void main(String[] args) {
+    	String str = new String("Douglas");
         int port = DEFAULT_PORT_NUMBER;
         String machine = DEFAULT_MACHINE_NAME;
-
-        /* Parsing parameters. argNdx will move forward across the
-         * indices; remember for arguments that have their own parameters, you
-         * must advance past the value for the argument too.
-         */
-        int argNdx = 0;
-
-        while (argNdx < args.length) {
-            String curr = args[argNdx];
-
-            if (curr.equals(ARG_PORT)) {
-                ++argNdx;
-
-                String numberStr = args[argNdx];
-                port = Integer.parseInt(numberStr);
-            } else if (curr.equals(ARG_MACHINE)) {
-                ++argNdx;
-                machine = args[argNdx];
-            } else {
-
-                // if there is an unknown parameter, give usage and quit
-                System.err.println("Unknown parameter \"" + curr + "\"");
-                usage();
-                System.exit(1);
-            }
-
-            ++argNdx;
-        }
-
+        
         Client myClient = new Client(machine, port);
-        myClient.run();
+        System.out.println(myClient.Respond(str));
     }
 }
