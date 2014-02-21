@@ -17,6 +17,7 @@ public class BoardTest extends JFrame{
   // Create a constructor method
   public BoardTest(){
     super();
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     addComponentsToPane(this.getContentPane());
     
     this.pack();
