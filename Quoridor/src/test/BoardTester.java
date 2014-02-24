@@ -19,7 +19,7 @@ public class BoardTester extends TestCase{
 		//dimensions of a square board, with wall space reserved
 		int xSize = 17;
 		int ySize = 17;
-		Board grid = new Board(17, 17);
+		Board grid = new Board(17, 17, 2);
 		assertEquals(xSize, getBoardSizeX(grid));
 	
 	}
@@ -28,8 +28,13 @@ public class BoardTester extends TestCase{
 		//dimensions of a square board, with wall space reserved
 		int xSize = 17;
 		int ySize = 17;
-		Board grid = new Board(17, 17);
+		Board grid = new Board(17, 17, 2);
 		assertEquals(ySize, getBoardSizeY(grid));
+	}
+	@Test
+	public void testPlayerStartPosition() throws Exception{
+		Board grid = new Board(17, 17, 2);
+		assertEquals("80, 816", getPlayerAt(grid));
 	}
 	//test that board is created to proper x dimensions.
 	private int getBoardSizeX(Board grid){
@@ -37,6 +42,10 @@ public class BoardTester extends TestCase{
 	}
 	private int getBoardSizeY(Board grid){
 		return grid.getSizeY();
+	}
+	private String getPlayerAt(Board grid){
+		
+		return " ";
 	}
 
 }
