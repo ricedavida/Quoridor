@@ -44,8 +44,8 @@ public class Board {
 		}
 		private int[] parseMove(String m){
 			int [] xy = new int[2];
-			String col = m.substring(0, 0);
-			String row = m.substring(1, 1);
+			String col = m.substring(0, 1);
+			String row = m.substring(1, m.length());
 			if(col.equalsIgnoreCase("a"))
 				xy[0] = 0;
 			else if(col.equalsIgnoreCase("b"))
@@ -66,6 +66,7 @@ public class Board {
 				xy[0] = 16;
 			else
 				xy[0] = -1;
+			//System.out.println(row);
 			xy[1] = Integer.parseInt(row);
 			return xy;
 		}
@@ -135,7 +136,14 @@ public class Board {
 	public int getSizeY(){
 		return cols;
 	}
-	public void checkSpace(int x, int y){
+	public boolean checkSpace(int x, int y){
+		if(playingGrid[x][y].hasPawn)
+			return true;
+		else
+			return false;
+	}
+	public String move(int player, String moveString){
+		return playerList[player].Move(moveString);
 		
 	}
 	
