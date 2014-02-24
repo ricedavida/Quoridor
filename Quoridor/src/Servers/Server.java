@@ -12,6 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     /** Default port number; used if none is provided. */
@@ -26,14 +28,20 @@ public class Server {
 
     /** Port number of distant machine */
     private int portNumber;
-
+    
+    protected Thread runningThread = null;
+    protected ExecutorService threadPool =
+        Executors.newFixedThreadPool(10);
+	
     // creating an instance of Server
     public Server(int portNumber) {
         this.portNumber = portNumber;
     }
 
     public void run() {
-
+    	synchronized(this){
+            this.runningThread = Thread.currentThread();
+        }
         try {
             ServerSocket server = new ServerSocket(portNumber);
             System.out.format("Server now accepting connections on port %d\n",
@@ -54,8 +62,9 @@ public class Server {
                 while (cin.hasNextLine()) {
                     clientMessage = cin.nextLine();
                     cout.println("Server sent: " + clientMessage);
-                    }
-
+                }
+                
+                this.threadPool.shutdown();
                 cout.close();
                 cin.close();
                 }

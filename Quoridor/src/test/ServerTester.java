@@ -9,6 +9,8 @@ package test;
 
 import org.junit.Test;
 
+import Servers.Server;
+
 import Clients.Client;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -48,29 +50,15 @@ public class ServerTester extends TestCase{
 	
 	// This test will see if the message "hi" is being received
 	@Test
-	public void testGetServerMessage() throws Exception {
-		String str = new String("hi");
-		assertEquals("Server sent: hi", getServerMessage(str));
-	}
-	
-	@Test
 	public void testGetServerMessage2() throws Exception {
 		String str = new String("Charles");
-		assertEquals("Server sent: Charles", getServerMessage(str));
-	}
-	
-	private String getServerMessage(String str) {
         int port = DEFAULT_PORT_NUMBER;
         String machine = DEFAULT_MACHINE_NAME;
-
-        /* Parsing parameters. argNdx will move forward across the
-         * indices; remember for arguments that have their own parameters, you
-         * must advance past the value for the argument too.
-         */
-
+        
         Client myClient = new Client(machine, port);
-        	
-		return myClient.Respond(str);
+		
+        
+		assertEquals("Server sent: Charles", myClient.Respond(str));
 	}
 	
 	/**
