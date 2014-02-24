@@ -1,11 +1,6 @@
 package Board_GUI;
 
-/*
- * GridBagLayoutDemo.java requires no other files.
- */
-
 import java.awt.*;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -13,18 +8,23 @@ public class BoardTest extends JFrame{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
-	
-  // Create a constructor method
-  public BoardTest(){
-    super();
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    addComponentsToPane(this.getContentPane());
-    
-    this.pack();
-	this.setVisible(true);
-  }
-  
-  public static void addComponentsToPane(Container pane) {
+	private int width = 0;
+	private int height = 0;
+	private Container pane = getContentPane();
+
+	// Create a constructor method
+	public BoardTest(){
+		super();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Container pane = this.getContentPane();
+
+		addComponentsToPane(this.getContentPane());
+
+		this.pack();
+		this.setVisible(true);
+	}
+
+	public static void addComponentsToPane(Container pane) {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		}
@@ -32,80 +32,29 @@ public class BoardTest extends JFrame{
 		JButton button;
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		if (shouldFill) {
-			//natural height, maximum width
-			c.fill = GridBagConstraints.HORIZONTAL;
+		
+		int row = 0;
+		for (int h = 0 ; h < 17 ; h++) {
+			if (h%2 == 0) {
+				row++;
+				for (int i = 0 ; i < 9 ; i++) {
+					button = new BoardSpace(row + "-" + (i+1));
+					c.weightx = 0.5;
+					c.fill = GridBagConstraints.HORIZONTAL;
+					c.gridx = i * 2;
+					c.gridy = (h * 2);
+					pane.add(button, c);
+				}
+			} else {
+				for (int i = 0 ; i < 8 ; i++) {
+					button = new Intersect("");
+					c.fill = GridBagConstraints.HORIZONTAL;
+					c.gridx = (i * 2) + 1;
+					c.gridy = (h * 2) + 1;
+					pane.add(button, c);
+				}
+			}
 		}
-
-		button = new BoardSpace("1");
-		if (shouldWeightX) {
-			c.weightx = 0.5;
-		}
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		pane.add(button, c);
-
-		//pane.add(new JLabel("     "));
-
-		button = new BoardSpace("2");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.gridx = 2;
-		c.gridy = 0;
-		pane.add(button, c);
-
-		//pane.add(new JLabel("     "));
-
-		button = new BoardSpace("3");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.gridx = 4;
-		c.gridy = 0;
-		c.ipadx = 0;      //make this component tall
-		c.ipadx = 1;      //make this component tall
-		pane.add(button, c);
-
-		button = new Intersect("");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 1;
-		c.gridy = 1;
-		pane.add(button, c);
-
-		button = new Intersect("");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 3;
-		c.gridy = 1;
-		pane.add(button, c);
-
-		button = new BoardSpace("4");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.gridx = 0;
-		c.gridy = 3;
-		c.ipadx = 0;      //make this component tall
-		c.ipadx = 1;      //make this component tall
-		pane.add(button, c);
-
-		button = new BoardSpace("5");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.gridx = 2;
-		c.gridy = 3;
-		c.ipadx = 0;      //make this component tall
-		c.ipadx = 1;      //make this component tall
-		pane.add(button, c);
-
-		button = new BoardSpace("6");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.gridx = 4;
-		c.gridy = 3;
-		c.ipadx = 0;      //make this component tall
-		c.ipadx = 1;      //make this component tall
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-		pane.add(button, c);
-		pane.repaint();
 		
 
 		/*
@@ -131,23 +80,33 @@ public class BoardTest extends JFrame{
 	pane.add(button, c);
 		 */
 	}
-  
-  
-  public void paint(Graphics g){
-	super.paint(g);
-    g.setColor(Color.MAGENTA);
-    g.fillRect(47, 85, 30, 20);
-    g.fillRect(47, 117, 30, 20);
-    g.setColor(Color.BLUE);
-    g.fillRect(1, 105, 46, 12);
-    g.fillRect(77, 105, 46, 12);
-  }
 
-  public static void main(String arg[]){
-    BoardTest frame = new BoardTest();
-    frame.setSize(200,200);
-    frame.setVisible(true);
-    
-    
-  }
+
+	public void paint(Graphics g){
+		g.clearRect(0, 0, getWidth(), getHeight());
+		super.paint(g);
+
+		//g.setColor(Color.MAGENTA);
+		getHorizontalWall(g, 0, 0, Color.MAGENTA);
+		//g.setColor(Color.BLUE);
+		//g.fillRect(1, 105, 46, 12);
+		//g.fillRect(77, 105, 46, 12);
+	}
+	
+	public void getHorizontalWall(Graphics g, int row, int column, Color c) {
+		//column = (column + 1) * 41;
+		column = (column + 1) * 35;
+		
+		g.setColor(c);
+		g.fillRect(0, column, 34, 13);
+		g.fillRect(52, column, 34, 13);
+	}
+	
+
+	public static void main(String arg[]){
+		BoardTest frame = new BoardTest();
+		frame.setSize(450,298);
+		frame.setResizable( false );
+		frame.setVisible(true); 
+	}
 }
