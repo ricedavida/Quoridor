@@ -1,6 +1,8 @@
 package Board_GUI;
 
 import java.awt.*;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -8,16 +10,11 @@ public class BoardTest extends JFrame{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
-	private int width = 0;
-	private int height = 0;
-	private Container pane = getContentPane();
 
 	// Create a constructor method
 	public BoardTest(){
 		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Container pane = this.getContentPane();
-
 		addComponentsToPane(this.getContentPane());
 
 		this.pack();
@@ -83,9 +80,11 @@ public class BoardTest extends JFrame{
 
 
 	public void paint(Graphics g){
-		g.clearRect(0, 0, getWidth(), getHeight());
+		//g.clearRect(0, 0, getWidth(), getHeight());
 		super.paint(g);
-
+		Image wood = new ImageIcon("wood.jpg").getImage();
+		g.drawImage(wood,0,0,getWidth(),getHeight(),null);
+		//super.paint(g);
 		//g.setColor(Color.MAGENTA);
 		getHorizontalWall(g, 0, 0, Color.MAGENTA);
 		//g.setColor(Color.BLUE);
