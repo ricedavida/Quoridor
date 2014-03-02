@@ -27,7 +27,7 @@ public class Board extends JFrame {
 			if(i%2==0){
 				for(x=0;x<17;x++){
 					if(x%2==0){
-						grid[i][x] = new BoardSpace(letter+"|"+x);
+						grid[i][x] = new BoardSpace(letter+"|"+x,letter+"|"+x);
 						add(grid[i][x]);
 					}
 					else{
@@ -46,7 +46,7 @@ public class Board extends JFrame {
 						add(grid[i][x]);
 					}
 					else{
-						grid[i][x] = new Intersect(i+"|"+x);
+						grid[i][x] = new Intersect(i+"|"+x,i+"|"+x);
 						add(grid[i][x]);
 					}
 				}
