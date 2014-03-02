@@ -1,95 +1,119 @@
 package Board_GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class BoardTest extends JFrame{
+public class BoardTest extends JFrame implements ActionListener{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
-
+	private ArrayList<JButton> spaces = new ArrayList<JButton>();
+	private ArrayList<JButton> walls = new ArrayList<JButton>();
+	private Image wood = new ImageIcon("wood_board.jpg").getImage();
+	private Graphics2D g2d;
+	/*
+	 * Col (1-37,2-80,3-122,4-163,5-205,6-247,7-289,8-331,9-373)
+	 * Row (1-4,2-44,3-84,4-124,5-164,6-204,7-244,8-284,9-324)
+	 */
+	final static int[] vertdim = new int[]{37,80,122,163,205,247,289,331,373};
+	final static int[] horzdim = new int[]{4,44,84,124,164,204,244,284,324}; 
+	//public static ImageIcon lblwood = new ImageIcon("labelwood.jpg").getImage();
 	// Create a constructor method
-	public BoardTest(){
+	public BoardTest() {
 		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		setContentPane(new ImagePanel(wood)); //must fix now that there are more panels
 		addComponentsToPane(this.getContentPane());
 
 		this.pack();
 		this.setVisible(true);
 	}
 
-	public static void addComponentsToPane(Container pane) {
+	public void addComponentsToPane(Container pane) {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		}
-
+		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setOpaque(false);
 		JButton button;
-		pane.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		pane.setLayout(new GridLayout());
 		
+		GridBagConstraints c = new GridBagConstraints();
 		int row = 0;
 		for (int h = 0 ; h < 17 ; h++) {
 			if (h%2 == 0) {
-				row++;
 				for (int i = 0 ; i < 9 ; i++) {
-					button = new BoardSpace(row + "-" + (i+1));
+					//button = new BoardSpace(row + "-" + (i+1));
+					button = new BoardSpace("", (row + "-" + i));
+					button.addActionListener(this);
 					c.weightx = 0.5;
 					c.fill = GridBagConstraints.HORIZONTAL;
 					c.gridx = i * 2;
 					c.gridy = (h * 2);
-					pane.add(button, c);
+					panel.add(button, c);
 				}
 			} else {
 				for (int i = 0 ; i < 8 ; i++) {
-					button = new Intersect("");
+					button = new Intersect("", (row + "-" + i));
+					button.addActionListener(this);
 					c.fill = GridBagConstraints.HORIZONTAL;
 					c.gridx = (i * 2) + 1;
 					c.gridy = (h * 2) + 1;
-					pane.add(button, c);
+					panel.add(button, c);
 				}
 			}
+			row++;
 		}
+		pane.add(panel);
 		
-
-		/*
-	button = new JButton("Long-Named Button 4");
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.ipady = 1;      //make this component tall
-	c.weightx = 0.0;
-	c.gridwidth = 3;
-	c.gridx = 0;
-	c.gridy = 1;
-	pane.add(button, c);
-		 */
-		/*
-	button = new JButton("5");
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.ipady = 0;       //reset to default
-	c.weighty = 1.0;   //request any extra vertical space
-	c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-	c.insets = new Insets(10,0,0,0);  //top padding
-	c.gridx = 2;       //aligned with button 2
-	c.gridwidth = 2;   //2 columns wide
-	c.gridy = 2;       //third row
-	pane.add(button, c);
-		 */
+		JPanel grid = new JPanel(new GridLayout(5,1));
+		grid.setOpaque(false);
+		JLabel label = new JLabel("\t\t\tfield 1");
+		label.setForeground(Color.MAGENTA);
+		grid.add(label);
+		JLabel label2 = new JLabel("\t\t\tfield 2");
+		label2.setForeground(Color.GREEN);
+		grid.add(label2);
+		JLabel label3 = new JLabel("\t\t\tfield 3");
+		label3.setForeground(Color.BLUE);
+		grid.add(label3);
+		JLabel label4 = new JLabel("\t\t\tfield 4");
+		label4.setForeground(Color.RED);
+		grid.add(label4);
+		JButton submit = new JButton("Submit");
+		submit.setOpaque(false);
+		//submit.setContentAreaFilled(false);
+		submit.setBorderPainted(false);
+		//submit.setPreferredSize(new Dimension(20,30));
+		grid.add(submit);
+		pane.add(grid);
 	}
 
 
 	public void paint(Graphics g){
-		//g.clearRect(0, 0, getWidth(), getHeight());
-		super.paint(g);
-		Image wood = new ImageIcon("wood.jpg").getImage();
+		g2d = (Graphics2D)g;
+		g.clearRect(0, 0, getWidth(), getHeight());
 		g.drawImage(wood,0,0,getWidth(),getHeight(),null);
-		//super.paint(g);
-		//g.setColor(Color.MAGENTA);
-		getHorizontalWall(g, 0, 0, Color.MAGENTA);
-		//g.setColor(Color.BLUE);
-		//g.fillRect(1, 105, 46, 12);
-		//g.fillRect(77, 105, 46, 12);
+		super.paint(g);
+		
+		g.setColor(Color.MAGENTA);
+		g.fillOval(horzdim[4], vertdim[0], 20, 20);
+		g.setColor(Color.GREEN);
+		g.fillOval(horzdim[0], vertdim[4], 20, 20);
+		g.setColor(Color.BLUE);
+		g.fillOval(horzdim[8], vertdim[4], 20, 20);
+		g.setColor(Color.RED);
+		g.fillOval(horzdim[4], vertdim[8], 20, 20);
 	}
 	
 	public void getHorizontalWall(Graphics g, int row, int column, Color c) {
@@ -101,11 +125,43 @@ public class BoardTest extends JFrame{
 		g.fillRect(52, column, 34, 13);
 	}
 	
+	public void setCircle(Graphics g, int r, int x, int y, Color c) {
+		g.setColor(c);
+		g.fillOval(horzdim[y], vertdim[x], 20, 20);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		//String button = e.getSource();
+		BoardSpace button;
+		Intersect inter; 
+			if (e.getSource() instanceof BoardSpace) {
+				button = (BoardSpace)e.getSource();
+				if (button.getId().equals("0-0")) {
+					setCircle(g2d, 20, 0, 0, Color.GREEN);
+				}
+					
+				System.out.println(button.getId());
+			} else if (e.getSource() instanceof Intersect) {
+				inter = (Intersect)e.getSource();
+				System.out.println(inter.getId());
+			}
+			//Intersect inter = (Intersect)e.getSource();
+			//System.out.println(inter.getId());
 
-	public static void main(String arg[]){
-		BoardTest frame = new BoardTest();
-		frame.setSize(450,298);
-		frame.setResizable( false );
-		frame.setVisible(true); 
+		System.out.println("I got it");
+		repaint();		
+	}
+	
+	class ImagePanel extends JComponent {
+	    private Image image;
+	    public ImagePanel(Image image) {
+	        this.image = image;
+	    }
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        g.drawImage(image, 0, 0, null);
+	    }
 	}
 }
