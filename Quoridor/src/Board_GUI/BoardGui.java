@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class BoardTest extends JFrame implements ActionListener{
+public class BoardGui extends JFrame implements ActionListener{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
@@ -28,7 +28,7 @@ public class BoardTest extends JFrame implements ActionListener{
 	final static int[] horzdim = new int[]{4,44,84,124,164,204,244,284,324}; 
 	//public static ImageIcon lblwood = new ImageIcon("labelwood.jpg").getImage();
 	// Create a constructor method
-	public BoardTest() {
+	public BoardGui() {
 		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -54,7 +54,7 @@ public class BoardTest extends JFrame implements ActionListener{
 			if (h%2 == 0) {
 				for (int i = 0 ; i < 9 ; i++) {
 					//button = new BoardSpace(row + "-" + (i+1));
-					button = new BoardSpace("", (row + "-" + i));
+					button = new BoardSpace("", (row + "-" + i), false);
 					button.addActionListener(this);
 					c.weightx = 0.5;
 					c.fill = GridBagConstraints.HORIZONTAL;
@@ -102,18 +102,22 @@ public class BoardTest extends JFrame implements ActionListener{
 
 	public void paint(Graphics g){
 		g2d = (Graphics2D)g;
-		g.clearRect(0, 0, getWidth(), getHeight());
-		g.drawImage(wood,0,0,getWidth(),getHeight(),null);
-		super.paint(g);
+		g2d.clearRect(0, 0, getWidth(), getHeight());
+		g2d.drawImage(wood,0,0,getWidth(),getHeight(),null);
+		super.paint(g2d);
 		
-		g.setColor(Color.MAGENTA);
-		g.fillOval(horzdim[4], vertdim[0], 20, 20);
-		g.setColor(Color.GREEN);
-		g.fillOval(horzdim[0], vertdim[4], 20, 20);
-		g.setColor(Color.BLUE);
-		g.fillOval(horzdim[8], vertdim[4], 20, 20);
-		g.setColor(Color.RED);
-		g.fillOval(horzdim[4], vertdim[8], 20, 20);
+		//g.setColor(Color.MAGENTA);
+		//g.fillOval(horzdim[4], vertdim[0], 20, 20);
+		
+		g2d.setColor(Color.GREEN);
+		g2d.fillOval(horzdim[0], vertdim[4], 20, 20);
+		g2d.setColor(Color.BLUE);
+		g2d.fillOval(horzdim[8], vertdim[4], 20, 20);
+		g2d.setColor(Color.RED);
+		g2d.fillOval(horzdim[4], vertdim[8], 20, 20);
+		//player1 = new Player("player1");
+		
+		//paint(pl1);
 	}
 	
 	public void getHorizontalWall(Graphics g, int row, int column, Color c) {
@@ -133,13 +137,20 @@ public class BoardTest extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		//String button = e.getSource();
 		BoardSpace button;
 		Intersect inter; 
 			if (e.getSource() instanceof BoardSpace) {
 				button = (BoardSpace)e.getSource();
 				if (button.getId().equals("0-0")) {
 					setCircle(g2d, 20, 0, 0, Color.GREEN);
+					if(button.isClicked()) {
+						button.setClicked(false);
+						button.repaint();
+					} else {
+						button.setClicked(true);
+						button.repaint();
+					}
+					
 				}
 					
 				System.out.println(button.getId());
@@ -151,7 +162,26 @@ public class BoardTest extends JFrame implements ActionListener{
 			//System.out.println(inter.getId());
 
 		System.out.println("I got it");
-		repaint();		
+		//repaint();		
+	}
+	
+	class Player extends JComponent {
+		private Graphics graphics;
+		private String player;
+		
+		public Player(String player) {
+			this.player = player;
+		}
+		protected void paintComponent(Graphics g) {
+			//super.paint(g);
+			this.graphics = g;
+			g.setColor(Color.MAGENTA);
+			g.fillOval(horzdim[4], vertdim[0], 20, 20);
+		}
+		public Graphics getGraphics(){
+			return this.graphics;
+		}
+		
 	}
 	
 	class ImagePanel extends JComponent {
