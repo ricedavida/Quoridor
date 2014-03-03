@@ -22,6 +22,7 @@ public class Board {
 		// location of their pawn
 		int x_loc;
 		int y_loc;
+		boolean kicked = false;
 		private String Move (String m){
 			if(checkString(m)){
 				int xy[] = parseMove(m);
@@ -29,15 +30,33 @@ public class Board {
 				this.y_loc = xy[0];
 				return ("valid "+m);
 			}
-			else
+			else{
+				this.kicked = true;
 				return("invalid "+m);
+			}
 		}
 		private boolean checkString(String m){
 			int xy[] = parseMove(m);
 			// off the board
 			if(xy[0] < 0 || xy[0] >16 || xy[1] < 0 || xy[1] > 16)
+				// move out of bounds
 				return false;
 			if(xy[0] != (this.x_loc+2) || xy[0] != (this.x_loc-2) ||xy[1] != (this.y_loc+2) || xy[1] != (this.y_loc-2))
+				// attempting to move to space not in range
+				return false;
+			if(xy[0] == this.x_loc+2 && xy[1] != 0)
+				// attempt diagonal move on +x
+				return false;
+			if(xy[0] == this.x_loc-2 && xy[1] != 0)
+				// attempting diagonal move on - x
+				return false;
+			int dirX = (xy[0] - this.x_loc)/2;
+			int dirY = (xy[1] - this.y_loc)/2;
+			// check in x and y directions for walls
+			// already know that xy has values that are 2 away from curent loc.
+			// should give a + or - 1 value, which is a wall position on the grid.
+			// checks the board for walls in the direction calculated above
+			if(playingGrid[(this.x_loc)+dirX][(this.y_loc)+dirY].isWall)
 				return false;
 			// insert board check for walls here
 			return true;	
@@ -143,9 +162,15 @@ public class Board {
 			return false;
 	}
 	public String move(int player, String moveString){
-		return playerList[player].Move(moveString);
-		
+		if(!playerList[player].kicked){
+			String moveResult;
+			moveResult = playerList[player].Move(moveString);
+			if(moveResult.charAt(0)== 'v')
+				return moveResult;
+				else
+					return "Player " +player+" has made an illegal move.";
+		}
+		else
+			return "That player has been kicked";
 	}
-	
-
 }
