@@ -173,4 +173,53 @@ public class Board {
 		else
 			return "That player has been kicked";
 	}
+	// getPos accepts an integer, 0 -3
+	// returns a String containing int, int
+	public String getPos(int playerId){
+		String temp ="";
+		temp = temp+(playerList[playerId].x_loc);
+		temp += ", ";
+		temp += playerList[playerId].y_loc;
+		return temp;
+	}
+	// get palyer
+	// accepts  an int 0-3, representing a player
+	// returns a string representing all facts about the player
+	// x, y, walls, is kicked
+	public String getPlayer(int playerId){
+		String temp = "";
+		temp += (playerList[playerId].x_loc);
+		temp += ", ";
+		temp += playerList[playerId].y_loc;
+		temp+=", ";
+		temp+= playerList[playerId].walls;
+		temp+=", ";
+		if(playerList[playerId].kicked)
+				temp+="kicked";
+		else
+			temp+="playing";
+		return temp;
+	}
+	// get_possible takes an int representing a player
+	// returns a 4 element array of strings
+	// each element of the array is a CSV that has the XY value of a possible move
+	// NO JUMPS YET, not finished
+	public String[] getPossible(int playerId){
+		String north = "";
+		String south = "";
+		String east = "";
+		String west = "";
+		String[] moves= new String[4];
+		int posX = playerList[playerId].x_loc;
+		int posY = playerList[playerId].y_loc;
+		if(!playingGrid[posX][posY+1].isWall)
+			north += posX + (posY+1);
+		else
+			north = "NO Move north";
+		if(!playingGrid[posX][posY-1].isWall)
+			south += posX + (posY-1);
+		else
+			south = "NO move south";
+		return moves;
+	}
 }
