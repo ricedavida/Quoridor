@@ -1,6 +1,10 @@
 
 package AI;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class AI_Methods {
 	//String Array to represent board
 	static String board[][]={
@@ -18,26 +22,13 @@ public class AI_Methods {
 	//list of all possible moves
 	static String list,fastestPath;
 	
-	public static void allPossibleMoves(){
+	public static void allPossibleMoves(String a){
 		list = "";
 		for(int i=0; i<81; i++)
-			switch (board[i/9][i%9]){
-			case "1": list = "";
+			if (board[i/9][i%9].equals(a)){
+			    list = "";
 				list+=possiblePawnMoves(i);
-				System.out.println("Pawn 1's possible moves:"+list);
-				break;
-			case "2": list = "";
-				list+=possiblePawnMoves(i);
-				System.out.println("Pawn 2's possible moves:"+list);
-				break;
-			case "3": list = "";
-				list+=possiblePawnMoves(i);
-				System.out.println("Pawn 3's possible moves:"+list);
-				break;
-			case "4": list = "";
-				list+=possiblePawnMoves(i);
-				System.out.println("Pawn 4's possible moves:"+list);
-				break;
+				System.out.println("Pawn "+a+"'s possible moves:"+list);
 			}
 	}
 
@@ -79,6 +70,18 @@ public class AI_Methods {
 	}
 
 	public static void main(String args[]){
-		allPossibleMoves();
+		String a = null;
+		System.out.println("Enter a pawn to find moves for:");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			a = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(a.equals("1")||a.equals("2")||a.equals("3")||a.equals("4"))
+			allPossibleMoves(a);
+		else
+			System.out.println("Not valid input");
+		
 	}
 }
