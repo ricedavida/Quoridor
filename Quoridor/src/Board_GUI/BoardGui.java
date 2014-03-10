@@ -16,8 +16,8 @@ public class BoardGui extends JFrame implements ActionListener{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
-	private ArrayList<JButton> spaces = new ArrayList<JButton>();
-	private ArrayList<JButton> walls = new ArrayList<JButton>();
+	private ArrayList<VWall> vertwalls = new ArrayList<VWall>();
+	private ArrayList<HWall> horzwalls = new ArrayList<HWall>();
 	private Image wood = new ImageIcon("wood_board.jpg").getImage();
 	private Graphics2D g2d;
 	/*
@@ -52,24 +52,47 @@ public class BoardGui extends JFrame implements ActionListener{
 		int row = 0;
 		for (int h = 0 ; h < 17 ; h++) {
 			if (h%2 == 0) {
+				//for (int i = 0 ; i < 9 ; i++) {
+				for (int i = 0 ; i < 17 ; i++) {
+					if (i % 2 == 0) {
+						//button = new BoardSpace(row + "-" + (i+1));
+						button = new BoardSpace("", (row + "-" + i), false);
+						button.addActionListener(this);
+						c.weightx = 0.5;
+						c.fill = GridBagConstraints.HORIZONTAL;
+						//c.gridx = i * 2;
+						c.gridx = i;
+						c.gridy = (h * 2);
+						panel.add(button, c);						
+					} else {
+						button = new VWall("", (((row-1)/2) + "-" + i/2), false);
+						vertwalls.add((VWall)button);
+						button.addActionListener(this);
+						c.weightx = 0.5;
+						c.fill = GridBagConstraints.HORIZONTAL;
+						c.gridx = i;
+						c.gridy = (h * 2);
+						panel.add(button, c);
+					}
+				}
+			} else {
 				for (int i = 0 ; i < 9 ; i++) {
-					//button = new BoardSpace(row + "-" + (i+1));
-					button = new BoardSpace("", (row + "-" + i), false);
+					button = new HWall("", (row + "-" + i), false);
+					horzwalls.add((HWall)button);
 					button.addActionListener(this);
 					c.weightx = 0.5;
 					c.fill = GridBagConstraints.HORIZONTAL;
-					c.gridx = i * 2;
-					c.gridy = (h * 2);
+					c.gridx = (i * 2);
+					c.gridy = (h * 2)+1;
 					panel.add(button, c);
 				}
-			} else {
 				for (int i = 0 ; i < 8 ; i++) {
-					button = new Intersect("", (row + "-" + i));
-					button.addActionListener(this);
-					c.fill = GridBagConstraints.HORIZONTAL;
-					c.gridx = (i * 2) + 1;
-					c.gridy = (h * 2) + 1;
-					panel.add(button, c);
+						button = new Intersect("", (row + "-" + i), 0);
+						button.addActionListener(this);
+						c.fill = GridBagConstraints.HORIZONTAL;
+						c.gridx = (i * 2)+1;
+						c.gridy = (h * 2) + 1;
+						panel.add(button, c);
 				}
 			}
 			row++;
@@ -139,30 +162,66 @@ public class BoardGui extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		BoardSpace button;
 		Intersect inter; 
-			if (e.getSource() instanceof BoardSpace) {
-				button = (BoardSpace)e.getSource();
-				if (button.getId().equals("0-0")) {
-					setCircle(g2d, 20, 0, 0, Color.GREEN);
-					if(button.isClicked()) {
-						button.setClicked(false);
-						button.repaint();
-					} else {
-						button.setClicked(true);
-						button.repaint();
-					}
-					
-				}
-					
-				System.out.println(button.getId());
-			} else if (e.getSource() instanceof Intersect) {
-				inter = (Intersect)e.getSource();
-				System.out.println(inter.getId());
+		if (e.getSource() instanceof BoardSpace) {
+			button = (BoardSpace)e.getSource();
+			if(button.isClicked()) {
+				button.setClicked(false);
+			} else {
+				button.setClicked(true);
 			}
-			//Intersect inter = (Intersect)e.getSource();
-			//System.out.println(inter.getId());
-
-		System.out.println("I got it");
-		//repaint();		
+		} else if (e.getSource() instanceof Intersect) {
+			inter = (Intersect)e.getSource();
+			System.out.println(inter.getId());
+			String [] sects = inter.getId().split("-");   
+			System.out.println(sects[0]);
+			System.out.println(sects[1]);
+			
+			// This is how the horizontal walls are built
+			if(inter.getWall() == 0) {
+				for (HWall wall : horzwalls) {
+					if (sects[0].equals(wall.getVert()) && sects[1].equals(wall.getHorz())){
+						wall.setClicked(true);
+						wall.repaint();
+						String sect2 = "" + (Integer.parseInt(sects[1]) + 1);
+						for (HWall wall2 : horzwalls) {
+							if (sects[0].equals(wall2.getVert()) && sect2.equals(wall2.getHorz())){
+								wall2.setClicked(true);
+								wall2.repaint();
+								inter.setWall(1);
+								break;
+							}
+						}
+					}
+				}
+			}
+			// This is how the vertical walls are built
+			else if(inter.getWall() == 1) {
+				sects = inter.getId().split("-"); 
+				System.out.println("\n\n");
+				String sect1 = "" + (Integer.parseInt(sects[0]));
+				for (VWall wall : vertwalls) {
+					//System.out.println(wall.getId());
+					if (sect1.equals(wall.getVert()) && sects[1].equals(wall.getHorz())){
+						System.out.println("this is a test" + wall.getId());
+						wall.setClicked(true);
+						wall.repaint();
+						String sect2 = "" + (Integer.parseInt(sects[0]));
+						for (VWall wall2 : vertwalls) {
+							if (sects[0].equals(wall2.getVert()) && sects[1].equals(wall2.getHorz())){
+								wall2.setClicked(true);
+								wall2.repaint();
+								inter.setWall(2);
+								break;
+							}
+						}
+					}
+				}
+			}
+			// This is how the walls are cleared
+			else if(inter.getWall() == 2) {
+				inter.setWall(0);
+			}
+		}
 	}
 	
 	class Player extends JComponent {
@@ -181,7 +240,6 @@ public class BoardGui extends JFrame implements ActionListener{
 		public Graphics getGraphics(){
 			return this.graphics;
 		}
-		
 	}
 	
 	class ImagePanel extends JComponent {

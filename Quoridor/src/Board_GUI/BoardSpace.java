@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class BoardSpace extends JButton{
 	boolean here = false;
 	private String id;
-	private static boolean clicked = false;
+	private boolean clicked = false;
 	public BoardSpace(String n, String id, boolean clicked){
 			super(n);
 			this.id = id;
@@ -17,15 +17,7 @@ public class BoardSpace extends JButton{
 			setBackground(new Color(100,50,50));
 			setPreferredSize(new Dimension(20,30));
 			
-			//setOpaque(false);
 			setBorderPainted(false);
-			
-			addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					here = true;
-					setBackground( Color.BLUE);
-				}
-			});
 	}
 	
 	public void setClicked(boolean clicked) {
@@ -38,12 +30,8 @@ public class BoardSpace extends JButton{
 	
 	public void paintComponent(Graphics g) {
 		if (!clicked) {
-            //g.clearRect(0, 0, getWidth(), getHeight());
 			super.paintComponent(g);
-            //g.setColor(Color.RED);
-			//g.fillOval(4, 4, 20, 20);
 		} else {
-			System.out.println("here");
 			g.setColor(Color.RED);
 			g.fillOval(4, 4, 20, 20);
 		}
