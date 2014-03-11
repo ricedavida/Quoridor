@@ -24,7 +24,6 @@ public class Intersect extends JButton {
 		this.bottom = bottom;
 		this.left = left;
 		this.right = right;
-		//setOpaque(false);
 		setPreferredSize(new Dimension(4,12));
 	}
 	
@@ -35,7 +34,6 @@ public class Intersect extends JButton {
 		this.south = south;
 		this.east = east;
 		this.west = west;
-		//setOpaque(false);
 		setPreferredSize(new Dimension(4,12));
 	}
 
@@ -86,8 +84,7 @@ public class Intersect extends JButton {
 	public void setBottomNeighbor(Intersect south) {
 		this.south = south;
 	}
-	
-	
+
 	public Intersect getLeftNeighbor() {
 		return west;
 	}
@@ -104,43 +101,4 @@ public class Intersect extends JButton {
 	public void setRightNeighbor(Intersect east) {
 		this.east = east;
 	}
-	
-	
-	/*
-	 * TopLeftIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: below, right
-	 * 
-	 * TopRightIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: below, left
-	 * 
-	 * BottomLeftIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, right
-	 * 
-	 * BottomRightIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, left
-	 * 
-	 * LeftIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, below, right
-	 * 
-	 * RightIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, below, left
-	 * 
-	 * TopIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: below, left, right
-	 * 
-	 * BottomIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, left, right
-	 * 
-	 * MiddleIntersect
-	 * 		Walls: top,bottom,left,right
-	 * 		Intersects: above, below, left, right
-	 */
 }
