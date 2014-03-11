@@ -3,6 +3,8 @@ package Board_GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -12,18 +14,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class BoardGui extends JFrame implements ActionListener{
+public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
-
-	private Image wood = new ImageIcon("wood_board.jpg").getImage();
+	private int players;
+	private JButton submit;
+	private Image wood;
 	private Graphics2D g2d;
 	
 	// Create a constructor method
-	public BoardGui() {
+	public BoardGui(int players) {
 		super();
+		this.players = players;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		if (players == 4) {
+			wood = new ImageIcon("board_4players.jpg").getImage();
+		} else {
+			wood = new ImageIcon("board_2players.jpg").getImage();
+		}
 
 		setContentPane(new ImagePanel(wood)); //must fix now that there are more panels
 		addComponentsToPane(this.getContentPane());
@@ -97,6 +107,20 @@ public class BoardGui extends JFrame implements ActionListener{
 		space.get(4).setColor(Color.BLUE);
 		space.get(4).setPotential(false);
 		space.get(4).setClicked(true);
+
+		space.get(76).setColor(Color.GREEN);
+		space.get(76).setPotential(false);
+		space.get(76).setClicked(true);
+		
+		if (players == 4) {
+			space.get(36).setColor(Color.RED);
+			space.get(36).setPotential(false);
+			space.get(36).setClicked(true);
+
+			space.get(44).setColor(Color.CYAN);
+			space.get(44).setPotential(false);
+			space.get(44).setClicked(true);
+		}
 		
 		/*
 		 * this is an example for potential spaces
@@ -105,10 +129,6 @@ public class BoardGui extends JFrame implements ActionListener{
 		space.get(5).setPotential(true);
 		space.get(13).setPotential(true);
 		
-		
-		space.get(76).setColor(Color.GREEN);
-		space.get(76).setPotential(false);
-		space.get(76).setClicked(true);
 		
 		pane.add(panel);
 		
@@ -124,9 +144,16 @@ public class BoardGui extends JFrame implements ActionListener{
 		label3.setForeground(Color.RED);
 		grid.add(label3);
 		JLabel label4 = new JLabel("\t\t\t");
-		label4.setForeground(Color.PINK);
+		label4.setForeground(Color.CYAN);
 		grid.add(label4);
-		JButton submit = new JButton("Submit");
+		
+		if (players == 4) {
+			label3.setText("\t\t\t" + 5 + " walls remain");
+			label4.setText("\t\t\t" + 5 + " walls remain");
+		}
+		
+		submit = new JButton("Submit");
+		submit.addMouseListener(this);
 		submit.setForeground(Color.WHITE);
 		submit.setOpaque(false);
 		submit.setBorderPainted(false);
@@ -194,6 +221,7 @@ public class BoardGui extends JFrame implements ActionListener{
 			}
 		}
 	}
+
 	
 	class ImagePanel extends JComponent {
 	    private Image image;
@@ -205,4 +233,32 @@ public class BoardGui extends JFrame implements ActionListener{
 	        g.drawImage(image, 0, 0, null);
 	    }
 	}
+
+	public void mouseEntered(MouseEvent e) {
+		submit.setForeground(Color.GREEN);
+	}
+
+	public void mouseExited(MouseEvent e) {
+		submit.setForeground(Color.WHITE);
+	}
+
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		//submit.setForeground(Color.BLUE);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		submit.setForeground(Color.BLUE);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		submit.setForeground(Color.GREEN);
+	}
+	
 }
