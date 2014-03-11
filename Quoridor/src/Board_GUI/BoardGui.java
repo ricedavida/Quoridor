@@ -95,32 +95,41 @@ public class BoardGui extends JFrame implements ActionListener{
 		}
 		
 		space.get(4).setColor(Color.BLUE);
+		space.get(4).setPotential(false);
 		space.get(4).setClicked(true);
 		
+		/*
+		 * this is an example for potential spaces
+		 */
+		space.get(3).setPotential(true);
+		space.get(5).setPotential(true);
+		space.get(13).setPotential(true);
+		
+		
 		space.get(76).setColor(Color.GREEN);
+		space.get(76).setPotential(false);
 		space.get(76).setClicked(true);
 		
 		pane.add(panel);
 		
 		JPanel grid = new JPanel(new GridLayout(5,1));
 		grid.setOpaque(false);
-		JLabel label = new JLabel("\t\t\tfield 1");
-		label.setForeground(Color.MAGENTA);
+		JLabel label = new JLabel("\t\t\t" + 5 + " walls remain");
+		label.setForeground(Color.BLUE);
 		grid.add(label);
-		JLabel label2 = new JLabel("\t\t\tfield 2");
+		JLabel label2 = new JLabel("\t\t\t" + 5 + " walls remain");
 		label2.setForeground(Color.GREEN);
 		grid.add(label2);
-		JLabel label3 = new JLabel("\t\t\tfield 3");
-		label3.setForeground(Color.BLUE);
+		JLabel label3 = new JLabel("\t\t\t");
+		label3.setForeground(Color.RED);
 		grid.add(label3);
-		JLabel label4 = new JLabel("\t\t\tfield 4");
-		label4.setForeground(Color.RED);
+		JLabel label4 = new JLabel("\t\t\t");
+		label4.setForeground(Color.PINK);
 		grid.add(label4);
 		JButton submit = new JButton("Submit");
+		submit.setForeground(Color.WHITE);
 		submit.setOpaque(false);
-		//submit.setContentAreaFilled(false);
 		submit.setBorderPainted(false);
-		//submit.setPreferredSize(new Dimension(20,30));
 		grid.add(submit);
 		pane.add(grid);
 	}

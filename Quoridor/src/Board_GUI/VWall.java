@@ -10,6 +10,7 @@ public class VWall extends JButton {
 	private String vert;
 	private String horz;
 	private static boolean clicked = false;
+	private Color color = Color.lightGray;
 	
 	public VWall(String n, String id, boolean clicked){
 		super(n);
@@ -21,6 +22,10 @@ public class VWall extends JButton {
 		setPreferredSize(new Dimension(4,30));
 		setBorderPainted(false);
 		setEnabled(false);
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	public void setClicked(boolean clicked) {
@@ -35,7 +40,7 @@ public class VWall extends JButton {
 		if (!clicked) {
 			super.paintComponent(g);
 		} else {
-			g.setColor(Color.BLUE);
+			g.setColor(color);
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
 	}
