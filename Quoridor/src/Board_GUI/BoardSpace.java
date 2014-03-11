@@ -9,6 +9,7 @@ public class BoardSpace extends JButton{
 	boolean here = false;
 	private String id;
 	private boolean clicked = false;
+	private Color color;
 	public BoardSpace(String n, String id, boolean clicked){
 			super(n);
 			this.id = id;
@@ -16,8 +17,11 @@ public class BoardSpace extends JButton{
 			setForeground(Color.BLACK);
 			setBackground(new Color(100,50,50));
 			setPreferredSize(new Dimension(20,30));
-			
 			setBorderPainted(false);
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	public void setClicked(boolean clicked) {
@@ -32,7 +36,7 @@ public class BoardSpace extends JButton{
 		if (!clicked) {
 			super.paintComponent(g);
 		} else {
-			g.setColor(Color.RED);
+			g.setColor(color);
 			g.fillOval(4, 4, 20, 20);
 		}
 	}
