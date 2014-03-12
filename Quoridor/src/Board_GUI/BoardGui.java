@@ -15,13 +15,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class BoardGui extends JFrame implements ActionListener, MouseListener{
-	final static boolean shouldFill = true;
-	final static boolean shouldWeightX = true;
+	//final static boolean shouldFill = true;
+	//final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
 	private int players;
 	private JButton submit;
 	private Image wood;
 	private Graphics2D g2d;
+	private String wallplaced = null;
+	private String submitmove = null;
+	private BoardSpace button = null;
+	private Intersect inter = null;
+	private ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
+	private ArrayList<Intersect> sect = new ArrayList<Intersect>();
+	private ArrayList<String> walls = new ArrayList<String>();
 	
 	// Create a constructor method
 	public BoardGui(int players) {
@@ -52,9 +59,6 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
- 		ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
-		ArrayList<Intersect> sect = new ArrayList<Intersect>();
-		
 		for (int i = 0 ; i < 9 ; i++) {
 			for (int j = 0 ; j < 9 ; j++) {
 				BoardSpace tmp = new BoardSpace("", i + "-" + j, false); 
@@ -74,7 +78,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 				HWall left = new HWall("", ((i) + "-" + (j-1)), false);
 				HWall right = new HWall("", ((i) + "-" + (j-1)), false);
 				
-				Intersect tmp = new Intersect("", i + "-" + j, top,bottom,left,right);
+				Intersect tmp = new Intersect("", ((i*9)+j) + "", top,bottom,left,right);
 				tmp.addActionListener(this);
 				c.weightx = 0.5;
 				c.fill = GridBagConstraints.HORIZONTAL;
@@ -157,10 +161,12 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		submit.setForeground(Color.WHITE);
 		submit.setOpaque(false);
 		submit.setBorderPainted(false);
+		submit.addActionListener(this);
 		grid.add(submit);
 		pane.add(grid);
 	}
 	
+	@Override
 	public void paint(Graphics g){
 		g2d = (Graphics2D)g;
 		g2d.clearRect(0, 0, getWidth(), getHeight());
@@ -171,9 +177,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		BoardSpace button;
-		Intersect inter; 
+
 		if (e.getSource() instanceof BoardSpace) {
 			button = (BoardSpace)e.getSource();
 			if(button.isClicked()) {
@@ -183,41 +187,74 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 			}
 		} else if (e.getSource() instanceof Intersect) {
 			inter = (Intersect)e.getSource(); 
-			
-			// This is how the horizontal walls are built
-			if(inter.getWall() == 0) {
-				inter.setWall(1);
-				HWall left = inter.getLeftWall();
-				left.setClicked(true);
-				left.repaint();
-				HWall right = inter.getRightWall();
-				right.setClicked(true);
-				right.repaint();
-			} else if(inter.getWall() == 1) {
-				inter.setWall(2);
-				// This is how the vertical walls are cleared				
-				HWall left = inter.getLeftWall();
-				left.setClicked(false);
-				left.repaint();
-				HWall right = inter.getRightWall();
-				right.setClicked(false);
-				right.repaint();
-				// This is how the vertical walls are built
-				VWall top = inter.getTopWall();
-				top.setClicked(true);
-				top.repaint();
-				VWall bottom = inter.getBottomWall();
-				bottom.setClicked(true);
-				bottom.repaint();
-			} else if(inter.getWall() == 2) {
-				// This is how the vertical walls are cleared
-				inter.setWall(0);
-				VWall top = inter.getTopWall();
-				top.setClicked(false);
-				top.repaint();
-				VWall bottom = inter.getBottomWall();
-				bottom.setClicked(false);
-				bottom.repaint();
+
+			if (wallplaced == null){
+				// This is how the horizontal walls are built
+				if(inter.getWall() == 0) {
+					wallplaced = inter.getId();
+					inter.setWall(1);
+					HWall left = inter.getLeftWall();
+					
+					submitmove = inter.getId() + "h";
+					
+					left.setClicked(true);
+					left.repaint();
+					HWall right = inter.getRightWall();
+					right.setClicked(true);
+					right.repaint();
+				} 
+			} else {
+				if(inter.getWall() == 1) {
+					inter.setWall(2);
+					// This is how the vertical walls are cleared				
+					HWall left = inter.getLeftWall();
+					submitmove = inter.getId() + "v";
+					
+					left.setClicked(false);
+					left.repaint();
+					HWall right = inter.getRightWall();
+					right.setClicked(false);
+					right.repaint();
+					// This is how the vertical walls are built
+					VWall top = inter.getTopWall();
+					top.setClicked(true);
+					top.repaint();
+					VWall bottom = inter.getBottomWall();
+					bottom.setClicked(true);
+					bottom.repaint();
+				} else if(inter.getWall() == 2) {
+					wallplaced = null;
+					submitmove = null;
+					// This is how the vertical walls are cleared
+					inter.setWall(0);
+					VWall top = inter.getTopWall();
+					top.setClicked(false);
+					top.repaint();
+					VWall bottom = inter.getBottomWall();
+					bottom.setClicked(false);
+					bottom.repaint();
+				}
+			}
+		} else if (e.getSource().equals(submit)) {
+			if (submitmove != null) {
+				if (inter != null) {
+					System.out.println("THIS IS MY MOVE " + submitmove);
+					if (inter.getWall() == 1) {
+						walls.add(inter.getId()+"h");
+						inter.setBorderPainted(false);
+						inter.setClicked(true);
+						inter.setEnabled(false);
+						submitmove = null;
+						wallplaced = null;
+					} else if (inter.getWall() ==2){
+						walls.add(inter.getId()+"v");
+						inter.setBorderPainted(false);
+						inter.setClicked(true);
+						inter.setEnabled(false);
+						submitmove = null;
+						wallplaced = null;
+					}
+				}
 			}
 		}
 	}
@@ -234,10 +271,12 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	    }
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		submit.setForeground(Color.GREEN);
 	}
-
+	
+	@Override
 	public void mouseExited(MouseEvent e) {
 		submit.setForeground(Color.WHITE);
 	}

@@ -9,7 +9,7 @@ public class VWall extends JButton {
 	private String id;
 	private String vert;
 	private String horz;
-	private static boolean clicked = false;
+	private boolean clicked = false;
 	private Color color = Color.lightGray;
 	
 	public VWall(String n, String id, boolean clicked){

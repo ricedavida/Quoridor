@@ -1,5 +1,7 @@
 package Board_GUI;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import javax.swing.*;
 
@@ -16,6 +18,8 @@ public class Intersect extends JButton {
 	private Intersect south;
 	private Intersect east;
 	private Intersect west;
+	private boolean clicked = false;
+	private Color color = Color.lightGray;
 	
 	public Intersect(String n, String id, VWall top, VWall bottom, HWall left, HWall right){
 		super(n);
@@ -27,16 +31,23 @@ public class Intersect extends JButton {
 		setPreferredSize(new Dimension(4,12));
 	}
 	
-	public Intersect(String n, String id, Intersect north, Intersect south, Intersect east, Intersect west){
-		super(n);
-		this.id = id;
-		this.north = north;
-		this.south = south;
-		this.east = east;
-		this.west = west;
-		setPreferredSize(new Dimension(4,12));
+	public void setClicked(boolean clicked) {
+		this.clicked = clicked;
 	}
-
+	
+	public boolean isClicked(){
+		return clicked;
+	}
+	
+	public void paintComponent(Graphics g) {
+		if (!clicked) {
+			super.paintComponent(g);
+		} else {
+			g.setColor(color);
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+	}
+	
 	public void setWall(int wall) {
 		this.wall = wall;
 	}
@@ -92,7 +103,6 @@ public class Intersect extends JButton {
 	public void setLeftNeighbor(Intersect west) {
 		this.west = west;
 	}
-	
 	
 	public Intersect getRightNeighbor() {
 		return east;
