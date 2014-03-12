@@ -204,6 +204,7 @@ public class Board {
 	// returns a 4 element array of strings
 	// each element of the array is a CSV that has the XY value of a possible move
 	// NO JUMPS YET, not finished
+	// just put git on my laptop. going to pus this comment to see if it worked
 	public String[] getPossible(int playerId){
 		String north = "";
 		String south = "";
