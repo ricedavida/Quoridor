@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class BoardGui extends JFrame implements ActionListener, MouseListener{
-	//final static boolean shouldFill = true;
-	//final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
 	private int players;
 	private JButton submit;
