@@ -1,4 +1,13 @@
 package Board_GUI;
+/* 
+ * name of file: HWall.java
+ * Authors: David Rice
+ * Last updated: March 12, 7:16 David Rice
+ * 
+ * This File builds a horizontal wall for the Quoridor game. It will represent
+ * a wall on the board.
+ */
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -6,39 +15,32 @@ import java.awt.Graphics;
 import javax.swing.*;
 
 public class HWall extends JButton{
-	private String id;
-	private String vert;
-	private String horz;
-	private static boolean clicked = false;
-	private Color color = Color.lightGray;
+	private String id; // the name of the id
+	private boolean clicked = false; // is there a player in the space
+	private Color color = Color.lightGray; // the color of the player
 	
+	// Construct a horizontal wall by passing it 2 Strings and a boolean variable
 	public HWall(String n, String id, boolean clicked){
 		super(n);
 		this.id = id;
-		String [] sects = id.split("-");
-		this.vert = sects[0];
-		this.horz = sects[1];
 		this.clicked = clicked;
 		this.setPreferredSize(new Dimension(4,12));
 		setBorderPainted(false);
 		setEnabled(false);
 	}
 	
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
+	// set the field to be a wall
 	public void setClicked(boolean clicked) {
 		this.clicked = clicked;
 	}
-	
+
+	// check if the wall is set
 	public boolean isClicked() {
 		return this.clicked;
 	}
 	
+	// paint or remove paint from the wall
 	public void paintComponent(Graphics g) {
-		//g.setColor(Color.lightGray);
-		//g.fillRect(0, 0, getWidth(), getHeight());
 		if (!clicked) {
 			super.paintComponent(g);
 		} else {
@@ -47,22 +49,13 @@ public class HWall extends JButton{
 		}
 	}
 	
+	// get the wall id
 	public String getId() {
 		return id;
 	}
 	
+	// set the wall id
 	public void setId(String id) {
 		this.id = id;
-		String [] sects = id.split("-");
-		this.vert = sects[0];
-		this.horz = sects[1];
 	}
-	
-	public String getVert() {
-		return vert;
-	}
-	
-	public String getHorz() {
-		return horz;
-	}	
 }
