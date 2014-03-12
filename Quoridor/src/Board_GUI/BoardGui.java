@@ -29,8 +29,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	private Image wood; //the background image for a game
 	private Graphics2D g2d;
 	//The following are for specific game moves
-	private String wallplaced = null;
-	private String submitmove = null;
+	private String wallPlaced = null;
+	private String submitMove = null;
 	private BoardSpace button = null;
 	private Intersect inter = null;
 	private ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
@@ -230,15 +230,15 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		} else if (e.getSource() instanceof Intersect) { // Handle Intersect clicking
 			inter = (Intersect)e.getSource(); 
 
-			if (wallplaced == null){
+			if (wallPlaced == null){
 				// This is how the horizontal walls are built
 				if(inter.getWall() == 0) { // handle horizontal wall
-					wallplaced = inter.getId();
+					wallPlaced = inter.getId();
 					inter.setWall(1);
 					HWall left = inter.getLeftWall();
 					
 					// the submit move is the intersect location followed by h
-					submitmove = inter.getId() + "h";
+					submitMove = inter.getId() + "h";
 					// setting true will make a wall appear
 					left.setClicked(true);
 					left.repaint();
@@ -254,7 +254,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 					HWall left = inter.getLeftWall();
 					
 					// the submit move is the intersect location followed by h
-					submitmove = inter.getId() + "v";
+					submitMove = inter.getId() + "v";
 					
 					// paint walls
 					left.setClicked(false);
@@ -271,8 +271,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 					bottom.setClicked(true);
 					bottom.repaint();
 				} else if(inter.getWall() == 2) {
-					wallplaced = null;
-					submitmove = null;
+					wallPlaced = null;
+					submitMove = null;
 					
 					// This is how the vertical walls are cleared
 					inter.setWall(0);
@@ -285,7 +285,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 				}
 			}
 		} else if (e.getSource().equals(submit)) { // handle Submit clicking
-			if (submitmove != null) {
+			if (submitMove != null) {
 				if (inter != null) {
 					/*
 					 * FIX HERE
@@ -293,22 +293,22 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 					 * Currently prints out the move, but should pass that move to a
 					 * method of some kind
 					 */
-					System.out.println("THIS IS MY MOVE " + submitmove);
+					System.out.println("THIS IS MY MOVE " + submitMove);
 					
 					if (inter.getWall() == 1) { // set horizontal
 						walls.add(inter.getId()+"h");
 						inter.setBorderPainted(false);
 						inter.setClicked(true);
 						inter.setEnabled(false);
-						submitmove = null;
-						wallplaced = null;
+						submitMove = null;
+						wallPlaced = null;
 					} else if (inter.getWall() ==2){ // set vertical
 						walls.add(inter.getId()+"v");
 						inter.setBorderPainted(false);
 						inter.setClicked(true);
 						inter.setEnabled(false);
-						submitmove = null;
-						wallplaced = null;
+						submitMove = null;
+						wallPlaced = null;
 					}
 				}
 			}
@@ -324,7 +324,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	        this.image = image;
 	    }
 	    
-	    // This will paing the image it is provided
+	    // This will paint the image it is provided
 	    @Override
 	    protected void paintComponent(Graphics g) {
 	        g.drawImage(image, 0, 0, null);
