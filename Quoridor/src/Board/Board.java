@@ -8,219 +8,130 @@ package Board;
 public class Board {
 	//board will consist of spaces, as defined by inner class
 	class space{
-		//every other space is a wall
-		boolean isWall;
+		//boolean isWall;
 		boolean hasPawn;
+		boolean [] canGo = new boolean[4];
 		public space(){
-			isWall = false;
+			//isWall = false;
 			hasPawn = false;
+			canGo[0] = true;
+			canGo[1] = true;
+			canGo[2] = true;
+			canGo[3] = true;
 		}
 	}
 	class player{ 
-		// number of walls left for each player
 		int walls;
-		// location of their pawn
-		int x_loc;
-		int y_loc;
+		int location;
 		boolean kicked = false;
-		private String Move (String m){
-			if(checkString(m)){
-				int xy[] = parseMove(m);
-				this.x_loc = xy[0];
-				this.y_loc = xy[0];
-				return ("valid "+m);
-			}
-			else{
-				this.kicked = true;
-				return("invalid "+m);
-			}
+		int possibleMoves[];
+		int end[];
+		// Not Yet Implemeted
+		private void move(int pos){
+			
 		}
-		private boolean checkString(String m){
-			int xy[] = parseMove(m);
-			// off the board
-			if(xy[0] < 0 || xy[0] >16 || xy[1] < 0 || xy[1] > 16)
-				// move out of bounds
-				return false;
-			if(xy[0] != (this.x_loc+2) || xy[0] != (this.x_loc-2) ||xy[1] != (this.y_loc+2) || xy[1] != (this.y_loc-2))
-				// attempting to move to space not in range
-				return false;
-			if(xy[0] == this.x_loc+2 && xy[1] != 0)
-				// attempt diagonal move on +x
-				return false;
-			if(xy[0] == this.x_loc-2 && xy[1] != 0)
-				// attempting diagonal move on - x
-				return false;
-			int dirX = (xy[0] - this.x_loc)/2;
-			int dirY = (xy[1] - this.y_loc)/2;
-			// check in x and y directions for walls
-			// already know that xy has values that are 2 away from curent loc.
-			// should give a + or - 1 value, which is a wall position on the grid.
-			// checks the board for walls in the direction calculated above
-			if(playingGrid[(this.x_loc)+dirX][(this.y_loc)+dirY].isWall)
-				return false;
-			// insert board check for walls here
-			return true;	
+		// Not Yet Implemented
+		private void kick(){
+			
 		}
-		private int[] parseMove(String m){
-			int [] xy = new int[2];
-			String col = m.substring(0, 1);
-			String row = m.substring(1, m.length());
-			if(col.equalsIgnoreCase("a"))
-				xy[0] = 0;
-			else if(col.equalsIgnoreCase("b"))
-				xy[0] = 2;
-			else if(col.equalsIgnoreCase("c"))
-				xy[0] = 4;
-			else if(col.equalsIgnoreCase("d"))
-				xy[0] = 6;
-			else if(col.equalsIgnoreCase("e"))
-				xy[0] = 8;
-			else if(col.equalsIgnoreCase("f"))
-				xy[0] = 10;
-			else if(col.equalsIgnoreCase("g"))
-				xy[0] = 12;
-			else if(col.equalsIgnoreCase("h"))
-				xy[0] = 14;
-			else if(col.equalsIgnoreCase("i"))
-				xy[0] = 16;
-			else
-				xy[0] = -1;
-			//System.out.println(row);
-			xy[1] = Integer.parseInt(row);
-			return xy;
-		}
-	}
-	//number of rows and cols in the board, including walls
-	int rows;
-	int cols;
-	player [] playerList;
-	//the grid. traverse this to learn about the board state
-	//even is pawn space, odd is wall
+	}	
 	
-	space playingGrid[][];
-	public Board (int xSize, int ySize, int players)
+	player [] playerList;
+	space playingGrid[];
+	int numPlayers;
+	
+	public Board (int players)
 	{
 		playerList = new Board.player[players];
-		rows = xSize;
-		cols = ySize;
-		playingGrid = new Board.space[rows][cols];
-		for(int i = 0; i < rows; i++){
-			for(int j = 0; j < cols; j++){
-				playingGrid[i][j] = new space();
+		playingGrid = new Board.space[81];
+		numPlayers = players;
+		for(int i = 0; i < 81; i++){
+				playingGrid[i] = new space();
 			}
-		}
 		for(int i = 0; i < players; i++ )
 			playerList[i] = new Board.player();
 		if(players == 2){
 			//player 1
-			playingGrid[8][0].hasPawn = true; 
-			playerList[0].x_loc = 8;
-			playerList[0].y_loc = 0;
+			playingGrid[4].hasPawn = true; 
+			playerList[0].location = 4;
 			playerList[0].walls = 10;
 			//player 2
-			playingGrid[8][16].hasPawn = true;
-			playerList[1].x_loc = 8;
-			playerList[1].y_loc = 16;
+			playingGrid[76].hasPawn = true;
+			playerList[1].location = 76;
 			playerList[1].walls = 10;
 		}
 		else if(players == 4){
 			// player 1
-			playingGrid[8][0].hasPawn = true;
-			playerList[0].x_loc = 8;
-			playerList[0].y_loc = 0;
+			playingGrid[4].hasPawn = true;
+			playerList[0].location = 4;
 			playerList[0].walls = 5;
 			// player 2
-			playingGrid[8][16].hasPawn = true;
-			playerList[1].x_loc = 8;
-			playerList[1].y_loc = 16;
+			playingGrid[72].hasPawn = true;
+			playerList[1].location = 76;
 			playerList[1].walls = 5;
 			// player 3
-			playingGrid[0][8].hasPawn = true;
-			playerList[2].x_loc = 0;
-			playerList[2].y_loc = 8;
+			playingGrid[36].hasPawn = true;
+			playerList[2].location = 36;
 			playerList[2].walls = 5;
 			// player 4
-			playingGrid[16][8].hasPawn = true;
-			playerList[3].x_loc = 16;
-			playerList[3].y_loc = 8;
+			playingGrid[44].hasPawn = true;
+			playerList[3].location = 44;
 			playerList[3].walls = 5;
 		}
 		else{
 			System.out.println("Invalid player configuration.");
 		}
 	}
-	public int getSizeX(){
-		return rows;
-	}
-	public int getSizeY(){
-		return cols;
-	}
-	public boolean checkSpace(int x, int y){
-		if(playingGrid[x][y].hasPawn)
+	public boolean checkSpace(int x){
+		if(playingGrid[x].hasPawn)
 			return true;
 		else
 			return false;
 	}
-	public String move(int player, String moveString){
-		if(!playerList[player].kicked){
-			String moveResult;
-			moveResult = playerList[player].Move(moveString);
-			if(moveResult.charAt(0)== 'v')
-				return moveResult;
-				else
-					return "Player " +player+" has made an illegal move.";
-		}
+	public int getPos(int playerId){
+		if(!playerList[playerId].kicked)
+			return (playerList[playerId].location);
 		else
-			return "That player has been kicked";
+			return -1;	
 	}
-	// getPos accepts an integer, 0 -3
-	// returns a String containing int, int
-	public String getPos(int playerId){
-		String temp ="";
-		temp = temp+(playerList[playerId].x_loc);
-		temp += ", ";
-		temp += playerList[playerId].y_loc;
-		return temp;
+	// needs move implemetation
+	public void setPos(int playerId, int pos){
+		playerList[playerId].move(pos);
 	}
-	// get palyer
-	// accepts  an int 0-3, representing a player
-	// returns a string representing all facts about the player
-	// x, y, walls, is kicked
-	public String getPlayer(int playerId){
-		String temp = "";
-		temp += (playerList[playerId].x_loc);
-		temp += ", ";
-		temp += playerList[playerId].y_loc;
-		temp+=", ";
-		temp+= playerList[playerId].walls;
-		temp+=", ";
+	public int getPlayerCount(){
+		return numPlayers;
+	}
+	public int[] getPossible(int playerId){
+		int possible[] = new int[4];
+		return possible;
+	}
+	// needs checkLegal implemented
+	// needs placeWall implementation
+	public String setWall(int playerId, String w){
 		if(playerList[playerId].kicked)
-				temp+="kicked";
-		else
-			temp+="playing";
-		return temp;
+			return "player "+playerId+" is out";
+		else if(playerList[playerId].walls <= 0)
+			return "player "+playerId+" has no walls";
+		else{
+				boolean canPlace = checkLegal(w);
+				if(canPlace){
+					placeWall(playerId, w);
+					return "wall "+w+ "placed";
+				}
+				else
+					return "wall" + w + "is not legal";
+		}
 	}
-	// get_possible takes an int representing a player
-	// returns a 4 element array of strings
-	// each element of the array is a CSV that has the XY value of a possible move
-	// NO JUMPS YET, not finished
-	// just put git on my laptop. going to pus this comment to see if it worked
-	public String[] getPossible(int playerId){
-		String north = "";
-		String south = "";
-		String east = "";
-		String west = "";
-		String[] moves= new String[4];
-		int posX = playerList[playerId].x_loc;
-		int posY = playerList[playerId].y_loc;
-		if(!playingGrid[posX][posY+1].isWall)
-			north += posX + (posY+1);
-		else
-			north = "NO Move north";
-		if(!playingGrid[posX][posY-1].isWall)
-			south += posX + (posY-1);
-		else
-			south = "NO move south";
-		return moves;
+	public int getWallCount(int playerId){
+		return playerList[playerId].walls;
+		
+	}
+	private boolean checkLegal(String w){
+	
+		
+		return true;
+	}
+	private void placeWall(int p, String w){
+		
 	}
 }

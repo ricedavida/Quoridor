@@ -1,6 +1,5 @@
 package Players;
 //this class is intended to represent the palyers
-//not gonna lie, i do not see the use of decoupling the players from the board
 
 public class Players {
 
