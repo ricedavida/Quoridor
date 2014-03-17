@@ -1,10 +1,9 @@
 package Players;
-//this class is intended to represent the palyers
+//this class is intended to represent the players
 
 public class Players {
 
 		private int playerName;
-		private int totalPlayers;
 		private int numWalls;
 		private boolean isKicked;
 		// location is a single int now. 
@@ -16,7 +15,7 @@ public class Players {
 		// if a player wins, this becomes true
 		//	probably don't need, but whatever
 		private boolean hasWon;
-		private int [] possibleMoves;
+	//	private int [] possibleMoves;
 		// format of possible moves: 
 		// array of ints
 		// pM[0] = North
@@ -30,7 +29,6 @@ public class Players {
 			numWalls = 20 / numPlayers;
 			isKicked = false;
 			hasWon = false;
-			totalPlayers = numPlayers;
 			if(playerId == 1){
 				this.location = 4;
 				this.end = new int[8];
@@ -39,11 +37,12 @@ public class Players {
 					this.end[i] = endLoc;
 					endLoc++;
 				}
-				this.possibleMoves = new int[4];
+			/*	this.possibleMoves = new int[4];
 				this.possibleMoves[0] = -1;
 				this.possibleMoves[1] = 13;
 				this.possibleMoves[2] = 3;
 				this.possibleMoves[3] = 5;
+			*/
 			}
 			else if(playerId == 2){
 				this.location = 76;
@@ -53,11 +52,13 @@ public class Players {
 					this.end[i] = endLoc;
 					endLoc++;
 				}
+				/*
 				this.possibleMoves = new int[4];
 				this.possibleMoves[0] = 67;
 				this.possibleMoves[1] = -1;
 				this.possibleMoves[2] = 75;
 				this.possibleMoves[3] = 77;
+				*/
 			}
 			else if(playerId ==3){
 				this.location = 36;
@@ -67,11 +68,13 @@ public class Players {
 					this.end[i] = endLoc;
 					endLoc+=9;
 				}
+				/*
 				this.possibleMoves = new int[4];
 				this.possibleMoves[0] = 27;
 				this.possibleMoves[1] = 45;
 				this.possibleMoves[2] = -1;
 				this.possibleMoves[3] = 37;
+				*/
 			}
 			else if(playerId == 4){
 				this.location = 44;
@@ -81,19 +84,22 @@ public class Players {
 					this.end[i] = endLoc;
 					endLoc+=9;
 				}
+				/*
 				this.possibleMoves = new int[4];
 				this.possibleMoves[0] = 35;
 				this.possibleMoves[1] = 53;
 				this.possibleMoves[2] = 43;
 				this.possibleMoves[3] = -1;
+				*/
 			}
 			else{
 				// make some kind of impossible player excetion here
+				// impossible astronaut? 
 				// eg. player 5, or num players !=2 or 4
 				System.out.println("Not vaild player configuration");
 			}
 		}
-		// methods go here
+
 		// getPos()
 		// args: null
 		// returns: int location
@@ -101,6 +107,14 @@ public class Players {
 		// the player is there right now.
 		public int getPos(){
 			return location;
+		}
+		
+		//	getKickedStatus()
+		//	args: null
+		//	return: boolean isKicked
+		//	return this player's status, kicked or playing.
+		public boolean getKickStatus(){
+			return isKicked;
 		}
 		
 		// getWallCount()
@@ -111,13 +125,37 @@ public class Players {
 			return numWalls;
 		}
 		
-		// helper method setPossible()
+		// getEnd()
+		//	args null
+		// returns end[]
+		// returns the set of win spaces for this player.
+		public int[] getEnd(){
+			return this.end;
+		}
+		
+		// wallDec()
+		// args: null
+		// returns ntohing
+		// simple method to take one wall away from a player when they place a wall
+		public void wallDec(){
+			this.numWalls--;
+		}
+		
+		// move()
+		// args: int newPos
+		// returns: nothing.
+		// changes the player's location to newPos
+		// legality checked from board's side
+		public void move(int newPos){
+			this.location = newPos;
+		}
+		
+		// makeKicked();
 		// args: null
 		// returns: null
-		// use this to calculate the current possible moves for a pawn
-		// call it after a move, from the move method.
-		// can not check for walls
-		private void setPossible(){
-			
+		// sets the palyer to kicked.
+		// board methods check this before making a move
+		public void makeKicked(){
+			this.isKicked = true;
 		}
 }
