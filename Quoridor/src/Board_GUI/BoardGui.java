@@ -9,6 +9,7 @@ package Board_GUI;
  */
 
 import java.awt.*;
+import Board.Board;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -36,11 +37,15 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	private ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
 	private ArrayList<Intersect> sect = new ArrayList<Intersect>();
 	private ArrayList<String> walls = new ArrayList<String>();
+	private JLabel[] labels = new JLabel[4];
+	
+	private Board board;
 	
 	// create the BoardGui based on a player count
-	public BoardGui(int players) {
+	public BoardGui(int players, Board board) {
 		super();
 		this.players = players;
+		this.board = board;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// setting the background specific to the player count
@@ -77,7 +82,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		// Create the BoardSpaces in a 9x9 grid
 		for (int i = 0 ; i < 9 ; i++) {
 			for (int j = 0 ; j < 9 ; j++) {
-				BoardSpace tmp = new BoardSpace("", i + "-" + j, false); 
+				BoardSpace tmp = new BoardSpace("", ""+ ((i*9) + j), false); 
 				tmp.addActionListener(this);
 				
 				// Add the BoardSpace
@@ -131,66 +136,50 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 			}
 		}
 		
-		 /* 
-		  * FIX ME 
-		  * 
-		  * this area needs to call a method to get the current player positions
-		  * 
-		  */
-		space.get(4).setColor(Color.BLUE);
-		space.get(4).setPotential(false);
-		space.get(4).setClicked(true);
+		//this area calls a board method to get the current player positions
+		space.get(board.getPos(0)).setColor(Color.BLUE);
+		space.get(board.getPos(0)).setPotential(false);
+		space.get(board.getPos(0)).setClicked(true);
 
-		space.get(76).setColor(Color.GREEN);
-		space.get(76).setPotential(false);
-		space.get(76).setClicked(true);
+		space.get(board.getPos(1)).setColor(Color.GREEN);
+		space.get(board.getPos(1)).setPotential(false);
+		space.get(board.getPos(1)).setClicked(true);
 		
 		if (players == 4) {
-			space.get(36).setColor(Color.RED);
-			space.get(36).setPotential(false);
-			space.get(36).setClicked(true);
-
-			space.get(44).setColor(Color.CYAN);
-			space.get(44).setPotential(false);
-			space.get(44).setClicked(true);
+			space.get(board.getPos(2)).setColor(Color.RED);
+			space.get(board.getPos(2)).setPotential(false);
+			space.get(board.getPos(2)).setClicked(true);
+			
+			space.get(board.getPos(3)).setColor(Color.CYAN);
+			space.get(board.getPos(3)).setPotential(false);
+			space.get(board.getPos(3)).setClicked(true);
 		}
 		
-		/*
-		 * FIX ME
-		 * 
-		 * this is an example for potential spaces, but needs to call a method
-		 */
-		space.get(3).setPotential(true);
-		space.get(5).setPotential(true);
-		space.get(13).setPotential(true);
+		// This sets the initial possible moves for player 1
+		paintPos(0);
 		
 		pane.add(panel);
 		
-		/*
-		 * FIX ME
-		 * 
-		 * These should calculate the walls based on a method
-		 */
-		// Create 4 JLabels to hold player information
+		// Create 4 JLabels to hold player wall count
 		JPanel grid = new JPanel(new GridLayout(5,1));
 		grid.setOpaque(false);
-		JLabel label = new JLabel("\t\t\t" + 5 + " walls remain");
-		label.setForeground(Color.BLUE);
-		grid.add(label);
-		JLabel label2 = new JLabel("\t\t\t" + 5 + " walls remain");
-		label2.setForeground(Color.GREEN);
-		grid.add(label2);
-		JLabel label3 = new JLabel("\t\t\t");
-		label3.setForeground(Color.RED);
-		grid.add(label3);
-		JLabel label4 = new JLabel("\t\t\t");
-		label4.setForeground(Color.CYAN);
+		labels[0] = new JLabel("\t\t\t" + board.getWallCount(0) + " walls remain");
+		labels[0].setForeground(Color.BLUE);
+		grid.add(labels[0]);
+		labels[1] = new JLabel("\t\t\t" + board.getWallCount(1) + " walls remain");
+		labels[1].setForeground(Color.GREEN);
+		grid.add(labels[1]);
+		labels[2] = new JLabel("\t\t\t");
+		labels[2].setForeground(Color.RED);
+		grid.add(labels[2]);
+		labels[3] = new JLabel("\t\t\t");
+		labels[3].setForeground(Color.CYAN);
 		// Add the JLabels
-		grid.add(label4);
+		grid.add(labels[3]);
 		
 		if (players == 4) {
-			label3.setText("\t\t\t" + 5 + " walls remain");
-			label4.setText("\t\t\t" + 5 + " walls remain");
+			labels[2].setText("\t\t\t" + board.getWallCount(2) + " walls remain");
+			labels[3].setText("\t\t\t" + board.getWallCount(3) + " walls remain");
 		}
 		
 		// Create and add a Submit JButton
@@ -202,6 +191,24 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		submit.addActionListener(this);
 		grid.add(submit);
 		pane.add(grid);
+	}
+	
+	public void paintPos(int player) {
+		// This sets the initial possible moves for player 1
+		int[] pos = board.getPossible(player);
+		for (int i = 0 ; i < pos.length ; i++) {
+			space.get(pos[i]).setPotential(true);
+			space.get(pos[i]).repaint();
+		}
+	}
+	
+	public void removePos(int player) {
+		// This sets the initial possible moves for player 1
+		int[] pos = board.getPossible(player);
+		for (int i = 0 ; i < pos.length ; i++) {
+			space.get(pos[i]).setPotential(false);
+			space.get(pos[i]).repaint();
+		}
 	}
 	
 	// This paint method will draw the background image onto the board
@@ -218,14 +225,43 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		/*
+		 * FIX ME
+		 * 
+		 * This should be handled by submit, not just clicking
+		 */
 		// Handle BoardSpace clicking 
 		if (e.getSource() instanceof BoardSpace) {
 			button = (BoardSpace)e.getSource();
 			// setting true will make a player appear, false will make them disappear
 			if(button.isClicked()) {
 				button.setClicked(false);
+				System.out.println(button.getId());
+				
 			} else {
-				button.setClicked(true);
+				if (board.checkMove(board.getCurrPlayer(), Integer.parseInt(button.getId()))) {
+					button.setClicked(true);
+					int curr = board.getPos(board.getCurrPlayer());
+					space.get(curr).setClicked(false);
+					removePos(board.getCurrPlayer());
+					space.get(curr).repaint();
+
+					board.setPos(board.getCurrPlayer(), Integer.parseInt(button.getId()));
+					space.get(board.getPos(board.getCurrPlayer())).setClicked(true);
+					space.get(board.getPos(board.getCurrPlayer())).setColor(board.getPlayer(board.getCurrPlayer()).getColor());
+					
+					space.get(board.getPos(board.getCurrPlayer())).repaint();
+					
+					if (players == 4) {
+						board.setCurrPlayer((board.getCurrPlayer()+1)%4);
+					} else {
+						board.setCurrPlayer((board.getCurrPlayer()+1)%2);
+					}
+					
+					paintPos(board.getCurrPlayer());
+					System.out.println(button.getId());
+				}
+				
 			}
 		} else if (e.getSource() instanceof Intersect) { // Handle Intersect clicking
 			inter = (Intersect)e.getSource(); 
@@ -295,8 +331,18 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 					 */
 					System.out.println("THIS IS MY MOVE " + submitMove);
 					
+					int curr = board.getPos(board.getCurrPlayer());
+					removePos(board.getCurrPlayer());
+					space.get(curr).repaint();
+					
 					if (inter.getWall() == 1) { // set horizontal
 						walls.add(inter.getId()+"h");
+						
+						board.setWall(board.getCurrPlayer(), inter.getId() + "h");
+						
+						labels[board.getCurrPlayer()].setText("\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
+						
+						
 						inter.setBorderPainted(false);
 						inter.setClicked(true);
 						inter.setEnabled(false);
@@ -304,12 +350,25 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 						wallPlaced = null;
 					} else if (inter.getWall() ==2){ // set vertical
 						walls.add(inter.getId()+"v");
+						board.setWall(board.getCurrPlayer(), inter.getId() + "v");
+						
+						labels[board.getCurrPlayer()].setText("\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
+						
+						
 						inter.setBorderPainted(false);
 						inter.setClicked(true);
 						inter.setEnabled(false);
 						submitMove = null;
 						wallPlaced = null;
 					}
+					
+					if (players == 4) {
+						board.setCurrPlayer((board.getCurrPlayer()+1)%4);
+					} else {
+						board.setCurrPlayer((board.getCurrPlayer()+1)%2);
+					}
+					
+					paintPos(board.getCurrPlayer());
 				}
 			}
 		}

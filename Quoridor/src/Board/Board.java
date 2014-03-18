@@ -43,19 +43,20 @@ public class Board {
 	// player list is set up so that p1 @0, p2 @ 1, p3 @ 2, and p4 @ 3. 
 	space playingGrid[];
 	int numPlayers;
+	private int playerNow;
 	ArrayList<wall> wallList= new ArrayList<wall>();
 	// for tracking, describe walls as the 4 spaces they modify?
 	// every time a wall is placed, add it to the list, and also modify the spaces such that they reflect the no-go status
-	
-	
-	public Board (int players)
-	{
+
+
+	public Board (int players) {
 		playerList = new Players[players];
 		playingGrid = new Board.space[81];
 		numPlayers = players;
+		playerNow = 0;
 		for(int i = 0; i < 81; i++){
-				playingGrid[i] = new space();
-			}
+			playingGrid[i] = new space();
+		}
 		for(int i = 0; i < playingGrid.length; i++){
 			if(i >=0 && i <=8)
 				playingGrid[i].canGo[0] = false;
@@ -96,7 +97,11 @@ public class Board {
 		else
 			return false;
 	}
-	
+	public Players getPlayer(int playerId){
+		
+		return playerList[playerId];
+	}
+
 	// POSSIBLE SPOT FOR PLAYERid ERROR
 	public int getPos(int playerId){
 		if(!playerList[playerId].getKickStatus())
@@ -104,7 +109,7 @@ public class Board {
 		else
 			return -1;	
 	}
-	
+
 	// POTENTIAL PLAYERID ERROR
 	public void setPos(int playerId, int pos){
 		// add move legality check
@@ -122,6 +127,15 @@ public class Board {
 	public int getPlayerCount(){
 		return numPlayers;
 	}
+	
+	public int getCurrPlayer(){
+		return playerNow;
+	}
+	
+	public void setCurrPlayer(int playerId) {
+		playerNow = playerId;
+	}
+	
 	// POTENTIAL PLAYERID ERROR
 	public int[] getPossible(int playerId){
 		// THIS IS AN IMPORTANT METHOD	
@@ -131,69 +145,69 @@ public class Board {
 			return nullReturn;
 		}
 		else{	
-		int pos = playerList[playerId].getPos();
-		ArrayList <Integer> possibilities = new ArrayList<Integer>();
-		for(int i = 0; i < 4; i++){
-			playingGrid[pos].visited2 = true;
-			if(playingGrid[pos].canGo[i]){
-				if(i == 0){
-					int newPos = pos-9;
-					if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
-						int[] possi = getPossible(playerAt(newPos));
-						for(int j = 0; j < possi.length; j++)
-							possibilities.add(possi[j]);
-						unvisit2();
+			int pos = playerList[playerId].getPos();
+			ArrayList <Integer> possibilities = new ArrayList<Integer>();
+			for(int i = 0; i < 4; i++){
+				playingGrid[pos].visited2 = true;
+				if(playingGrid[pos].canGo[i]){
+					if(i == 0){
+						int newPos = pos-9;
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+							int[] possi = getPossible(playerAt(newPos));
+							for(int j = 0; j < possi.length; j++)
+								possibilities.add(possi[j]);
+							unvisit2();
+						}
+						else{
+							possibilities.add(newPos);
+						}	
 					}
-					else{
-						possibilities.add(newPos);
-					}	
-				}
-				else if(i == 1){
-					int newPos = pos+9;
-					if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
-						int[] possi = getPossible(playerAt(newPos));
-						for(int j = 0; j < possi.length; j++)
-							possibilities.add(possi[j]);
-						unvisit2();
+					else if(i == 1){
+						int newPos = pos+9;
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+							int[] possi = getPossible(playerAt(newPos));
+							for(int j = 0; j < possi.length; j++)
+								possibilities.add(possi[j]);
+							unvisit2();
+						}
+						else{
+							possibilities.add(newPos);
+						}	
 					}
-					else{
-						possibilities.add(newPos);
-					}	
+					else if(i == 2){
+						int newPos = pos-1;
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+							int[] possi = getPossible(playerAt(newPos));
+							for(int j = 0; j < possi.length; j++)
+								possibilities.add(possi[j]);
+							unvisit2();
+						}
+						else{
+							possibilities.add(newPos);
+						}	
+					}
+					else if(i == 3){
+						int newPos = pos+1;
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+							int[] possi = getPossible(playerAt(newPos));
+							for(int j = 0; j < possi.length; j++)
+								possibilities.add(possi[j]);
+							unvisit2();
+						} 
+						else{
+							possibilities.add(newPos);
+						}	
+					}
 				}
-				else if(i == 2){
-					int newPos = pos-1;
-					if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
-						int[] possi = getPossible(playerAt(newPos));
-						for(int j = 0; j < possi.length; j++)
-							possibilities.add(possi[j]);
-						unvisit2();
-				}
-					else{
-						possibilities.add(newPos);
-					}	
-				}
-				else if(i == 3){
-					int newPos = pos+1;
-					if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
-						int[] possi = getPossible(playerAt(newPos));
-						for(int j = 0; j < possi.length; j++)
-							possibilities.add(possi[j]);
-						unvisit2();
-					} 
-					else{
-						possibilities.add(newPos);
-					}	
-				}
+
 			}
-				
-		}
-		int[] p = new int[possibilities.size()];
-		for(int i = 0; i < p.length; i++)
-			p[i] = possibilities.get(i);
-		return p;
+			int[] p = new int[possibilities.size()];
+			for(int i = 0; i < p.length; i++)
+				p[i] = possibilities.get(i);
+			return p;
 		}
 	}
-	
+
 	// POTENTIAL PLAYERID ERROR
 	public String setWall(int playerId, String w){
 		if(playerList[playerId].getKickStatus())
@@ -201,14 +215,14 @@ public class Board {
 		else if(playerList[playerId].getWallCount() <= 0)
 			return "player "+playerId+" has no walls";
 		else{
-				boolean canPlace = checkLegal(playerId, w);
-				if(canPlace){
-					placeWall(w);
-					playerList[playerId].wallDec();
-					return "wall "+w+ "placed";
-				}
-				else
-					return "wall" + w + "is not legal";
+			boolean canPlace = checkLegal(playerId, w);
+			if(canPlace){
+				placeWall(w);
+				playerList[playerId].wallDec();
+				return "wall "+w+ "placed";
+			}
+			else
+				return "wall" + w + "is not legal";
 		}
 	}
 	// POTENTIAL PLAYERID ERROR
@@ -218,21 +232,21 @@ public class Board {
 		else
 			return playerList[playerId].getWallCount();
 	}
-	
+
 	// putting kick function here. making it public for now, but will talk to group about who dose kicking
 	// in this form. it is a possible playerId error.
-	
+
 	public void kick(int playerId){
 		int pos = playerList[playerId].getPos();
 		playingGrid[pos].hasPawn = false;
 		playerList[playerId].makeKicked();
 	}
-	
-	
+
+
 	// here there be helper functions. all private. 
 	// from here on, all player id are form internal function, all coded knowing that
 	// players are indexed 0 - 3
-	
+
 	// string w is the location of the northwest corner of the wall and H or V
 	private boolean checkLegal(int playerId, String w){
 		// rules for quoridor walls:
@@ -270,7 +284,7 @@ public class Board {
 		boolean wallEqFlag = false;
 		if(!wallList.isEmpty()){
 			for(int i = 0; i < wallList.size(); i++){
-				
+
 				int eqCount = 0;
 				for(int j = 0; j < 4; j ++){
 					if(wallList.get(i).spacesAffected[j] == wallTouchingSpaces[j])
@@ -287,6 +301,11 @@ public class Board {
 		// that should check for intersecting walls.
 		// now to check for boxed in players
 		// thinking place walls, then try to find a way out
+		
+		//*******
+		// no-fucntional path algorithm
+		// *****
+		/*
 		placeWall(w);
 		int pathCount = 0; 
 		for(int i = 0; i < playerList.length; i++){
@@ -300,11 +319,11 @@ public class Board {
 		if(pathCount != this.getPlayerCount())
 			return false;
 		removeWall(w);
-		
+		*/
 		return true;
 	}
-	
-	private boolean checkMove(int playerId, int newPos){
+
+	public boolean checkMove(int playerId, int newPos){
 		// why wouldnt a player be able to move somewhere?
 		// 1. it isnt on the board
 		// 2. a wall is in the way
@@ -321,7 +340,7 @@ public class Board {
 		}
 		return possibleFlag;
 	}
-	
+
 	private void placeWall(String w){
 		char direction = w.charAt(w.length()-1);
 		String temp = w.substring(0, w.length()-1);
@@ -342,9 +361,9 @@ public class Board {
 		}
 		else
 			System.out.println("Somebody tried to set some kind of bad wall");
-		
+
 	}
-	
+
 	private void removeWall(String w){
 		char direction = w.charAt(w.length()-1);
 		String temp = w.substring(0, w.length()-1);
@@ -364,9 +383,9 @@ public class Board {
 		}
 		else
 			System.out.println("Somebody tried to remove some kind of bad wall");
-		
+
 	}
-	
+
 	private int pathChecker(int player, int pos){
 		// mark this node as visited
 		playingGrid[pos].visited = true;
@@ -391,19 +410,19 @@ public class Board {
 			if(possCount <=0)
 				return 0;
 			else{
-				
+
 				int t;
 				t = 0;
 				for(int i = 0; i < possible.length; i++){
 					t= t+ pathChecker(player, possible[i]);
 				}
-			// return false if all nearby are visited or no possible way off square
-			// else return pathChecker(player pos) || pathChecker(player pos)|| ... 
+				// return false if all nearby are visited or no possible way off square
+				// else return pathChecker(player pos) || pathChecker(player pos)|| ... 
 				return t;
 			}
 		}
 	}
-	
+
 	private int playerAt(int pos){
 		int playerYouWant = -1;
 		for( int i = 0; i < playerList.length; i++){
@@ -412,7 +431,7 @@ public class Board {
 		}
 		return playerYouWant;
 	}
-	
+
 	private void unvisit(){
 		for(int i = 0; i < playingGrid.length; i++)
 		{

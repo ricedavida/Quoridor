@@ -1,4 +1,7 @@
 package Players;
+
+import java.awt.Color;
+
 //this class is intended to represent the players
 
 public class Players {
@@ -6,6 +9,7 @@ public class Players {
 		private int playerName;
 		private int numWalls;
 		private boolean isKicked;
+		private Color playerTint;
 		// location is a single int now. 
 		// board is numbers from 0 to 80. 
 		private int location;
@@ -29,8 +33,11 @@ public class Players {
 			numWalls = 20 / numPlayers;
 			isKicked = false;
 			hasWon = false;
-			if(playerId == 1){
+			if(playerId == 0){
+				// to test if the possible is working uncomment the following
+				//this.location = 14;
 				this.location = 4;
+				playerTint = Color.BLUE;
 				this.end = new int[8];
 				int endLoc = 72;
 				for(int i = 0; i < 8; i++){
@@ -44,8 +51,11 @@ public class Players {
 				this.possibleMoves[3] = 5;
 			*/
 			}
-			else if(playerId == 2){
+			else if(playerId == 1){
+				// to test if the possible is working uncomment the following
+				//this.location = 15;
 				this.location = 76;
+				playerTint = Color.GREEN;
 				this.end = new int[8];
 				int endLoc = 0;
 				for(int i = 0; i < 8; i++){
@@ -60,8 +70,9 @@ public class Players {
 				this.possibleMoves[3] = 77;
 				*/
 			}
-			else if(playerId ==3){
+			else if(playerId ==2){
 				this.location = 36;
+				playerTint = Color.RED;
 				this.end = new int[8];
 				int endLoc = 8;
 				for(int i = 0; i < 8; i++){
@@ -76,8 +87,9 @@ public class Players {
 				this.possibleMoves[3] = 37;
 				*/
 			}
-			else if(playerId == 4){
+			else if(playerId == 3){
 				this.location = 44;
+				playerTint = Color.CYAN;
 				this.end = new int[8];
 				int endLoc = 0;
 				for(int i = 0; i < 8; i++){
@@ -157,5 +169,8 @@ public class Players {
 		// board methods check this before making a move
 		public void makeKicked(){
 			this.isKicked = true;
+		}
+		public Color getColor(){
+			return playerTint;
 		}
 }
