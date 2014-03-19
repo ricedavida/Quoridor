@@ -18,24 +18,27 @@ public class BoardSpace extends JButton{
 	private String id; // the name of the BoardSpace
 	private boolean clicked = false; // is there a player in the space
 	private boolean potential = false; // is the space a potential move
+	private boolean lastSpace = false; // is the old space
 	private Color color; // the color of the player
-	
+	private Color lastSpaceColor = Color.DARK_GRAY;
+
 	// Construct a BoardSpace by passing it 2 Strings and a boolean variable
 	public BoardSpace(String n, String id, boolean clicked){
-			super(n);
-			this.id = id;
-			this.clicked = clicked;
-			setForeground(Color.BLACK);
-			setBackground(new Color(100,50,50));
-			setPreferredSize(new Dimension(20,30));
-			setBorderPainted(false);
+		super(n);
+		this.id = id;
+		this.clicked = clicked;
+		color = Color.BLUE;
+		setForeground(color);
+		setBackground(new Color(100,50,50));
+		setPreferredSize(new Dimension(20,30));
+		setBorderPainted(false);
 	}
-	
+
 	// set the color of a player
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
+
 	// set the field to be a player
 	public void setClicked(boolean clicked) {
 		this.clicked = clicked;
@@ -45,12 +48,22 @@ public class BoardSpace extends JButton{
 	public boolean isClicked() {
 		return this.clicked;
 	}
-	
+
+	// set the field to be a player
+	public void setLastSpace(boolean lastSpace) {
+		this.lastSpace = lastSpace;
+	}
+
+	// check if the field is a player
+	public boolean isLastSpace() {
+		return this.lastSpace;
+	}
+
 	// set the field to be a possible
 	public void setPotential(boolean potential) {
 		this.potential = potential;
 	}
-	
+
 	// check if the is a possible 
 	public boolean getPotential() {
 		return this.potential;
@@ -65,14 +78,32 @@ public class BoardSpace extends JButton{
 			g.setColor(color);
 			g.fillOval(4, 4, 20, 20);
 		}
-		
+
 		// handle the possible locations
-		if(potential) {
-			g.setColor(new Color(.5f, .5f, 1f, 0.60f));
+		if (potential) {
+			if (color.equals(Color.BLUE)){
+				g.setColor(new Color(0f, 0f, 1f, 0.60f));
+				g.fillRect(0, 0, getWidth(), getHeight());
+			} else if (color.equals(Color.RED)){
+				g.setColor(new Color(1f, 0f, 0f, 0.60f));
+				g.fillRect(0, 0, getWidth(), getHeight());
+			} else if (color.equals(Color.GREEN)){
+				g.setColor(new Color(.5f, 1f, .5f, 0.60f));
+				g.fillRect(0, 0, getWidth(), getHeight());
+			} else if (color.equals(Color.CYAN)){
+				g.setColor(new Color(.25f, .25f, .75f, 0.60f));
+				g.fillRect(0, 0, getWidth(), getHeight());
+			}
+		}
+		if (!lastSpace) {
+			super.paintComponent(g);
+		} else {
+			g.setColor(new Color(1f, 0f, 1f, 0.60f));
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
+
 	}
-	
+
 	// get the space's name
 	public String getId() {
 		return id;
