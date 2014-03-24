@@ -1,6 +1,9 @@
 package Clients;
 
+import javax.swing.JOptionPane;
+
 import Board_GUI.BoardGui;
+import Board_GUI.GameEnd;
 import Board.Board;
 
 public class main {
@@ -14,5 +17,6 @@ public class main {
 		frame.setResizable( false );
 		frame.setVisible(true);
 		
+		GameEnd end = new GameEnd(board.getPlayerCount(), 0);
 	}
 }

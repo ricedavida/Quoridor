@@ -246,12 +246,24 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 			button = (BoardSpace)e.getSource();
 			// setting true will make a player appear, false will make them disappear
 			newPosition = Integer.parseInt(button.getId());
-			if (board.checkMove(board.getCurrPlayer(), newPosition) || board.getPos(board.getCurrPlayer()) == newPosition) {
 
+			if (board.checkMove(board.getCurrPlayer(), newPosition) || 
+					board.getPos(board.getCurrPlayer()) == newPosition) {
 				button.setClicked(true);
 				currentPosition = board.getPos(board.getCurrPlayer());
+
+
 				removeOldMoves(board.getCurrPlayer(), currentPosition);
 				paintPos(board.getCurrPlayer());
+
+				/* 
+				 * Fix Here
+				 * 
+				 * I need to have a win/lose state in this area,
+				 * basically if a player selects a winning tile, 
+				 * it will launch a JMessage with either, you win
+				 * or you lose messages
+				 */
 				
 				if (space.get(currentPosition).equals(space.get(newPosition))) {
 					space.get(currentPosition).setPotential(false);
@@ -260,7 +272,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 					space.get(currentPosition).repaint();
 					submitMove = null;
 					placed = null;
-				} else if (placed == null) {
+				} else if (placed == null || button.getId() != submitMove) {
 					space.get(currentPosition).setClicked(false);
 					space.get(currentPosition).setLastSpace(true);
 					space.get(Integer.parseInt(button.getId())).setClicked(true);
@@ -272,8 +284,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 				} else {
 					space.get(currentPosition).setClicked(true);
 					space.get(currentPosition).repaint();
-				}
-			}		
+				}	
+			}
 		} else if (e.getSource() instanceof Intersect) { // Handle Intersect clicking
 			inter = (Intersect)e.getSource(); 
 			if (placed == null){
@@ -333,19 +345,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		} else if (e.getSource().equals(submit)) { // handle Submit clicking
 			if (submitMove != null) {
 				if (button != null) { // handle spaces
-					//int curr = board.getPos(board.getCurrPlayer());
-					//removePos(board.getCurrPlayer());
-					//space.get(curr).repaint();
-					
-					System.out.println("here");
 					currentPosition = board.getPos(board.getCurrPlayer());
-					
-					/*space.get(currentPosition).setPotential(false);
-					space.get(currentPosition).setLastSpace(false);
-					space.get(currentPosition).setClicked(true);
-					space.get(currentPosition).repaint();
-					*/
-					
+
 					if (!space.get(currentPosition).equals(space.get(newPosition))) {
 						removePos(board.getCurrPlayer());
 						space.get(currentPosition).setPotential(false);
