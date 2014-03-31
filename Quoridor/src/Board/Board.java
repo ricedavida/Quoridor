@@ -152,7 +152,7 @@ public class Board {
 				if(playingGrid[pos].canGo[i]){
 					if(i == 0){
 						int newPos = pos-9;
-						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
 							int[] possi = getPossible(playerAt(newPos));
 							for(int j = 0; j < possi.length; j++)
 								possibilities.add(possi[j]);
@@ -164,7 +164,7 @@ public class Board {
 					}
 					else if(i == 1){
 						int newPos = pos+9;
-						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
 							int[] possi = getPossible(playerAt(newPos));
 							for(int j = 0; j < possi.length; j++)
 								possibilities.add(possi[j]);
@@ -176,7 +176,7 @@ public class Board {
 					}
 					else if(i == 2){
 						int newPos = pos-1;
-						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
 							int[] possi = getPossible(playerAt(newPos));
 							for(int j = 0; j < possi.length; j++)
 								possibilities.add(possi[j]);
@@ -188,7 +188,7 @@ public class Board {
 					}
 					else if(i == 3){
 						int newPos = pos+1;
-						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited){
+						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
 							int[] possi = getPossible(playerAt(newPos));
 							for(int j = 0; j < possi.length; j++)
 								possibilities.add(possi[j]);
@@ -431,6 +431,20 @@ public class Board {
 		}
 		return playerYouWant;
 	}
+	// call this on a player to check that they have won.
+	// looks at the array of win positions in the player object
+	// compare the current position to the array of win positions. 
+	// return true if the player passed in has reached a win square
+	// return false if the player passed has not reached a win state
+	private boolean playerHasWon(int playerId){
+		boolean winFlag = false;
+		int [] winList = playerList[playerId].getEnd();
+		for(int i = 0; i < winList.length; i++){
+			if(playerList[playerId].getPos() == winList[i])
+				winFlag = true;
+		}
+		return winFlag;
+	}
 
 	private void unvisit(){
 		for(int i = 0; i < playingGrid.length; i++)
@@ -443,5 +457,8 @@ public class Board {
 		{
 			playingGrid[i].visited2 = false;
 		}
+	}
+	public int getSizeOfBoard(){
+		return playingGrid.length;
 	}
 }
