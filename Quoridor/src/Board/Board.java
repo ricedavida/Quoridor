@@ -220,6 +220,7 @@ public class Board {
 				placeWall(w);
 				playerList[playerId].wallDec();
 				return "wall "+w+ "placed";
+				// wall list updated when placewall called
 			}
 			else
 				return "wall" + w + "is not legal";
@@ -240,6 +241,28 @@ public class Board {
 		int pos = playerList[playerId].getPos();
 		playingGrid[pos].hasPawn = false;
 		playerList[playerId].makeKicked();
+	}
+	
+	// returns an array of 20 strings. 
+	// each of those strings is the encoded version of the walls
+	// i.e. e7h for wall with northwest corner at e7 h or v 
+	// invalid or empty walls are shown as z0
+	// TEST THIS MUCH
+	public String[] getWalls(){
+		// 20 walls is the total number of walls in any game
+		// not all can be in play
+		int wallNumber = 0;
+		String [] wlist = new String[wallNumber];
+		int inPlay = wallList.size();
+		for(int i = 0; i < inPlay; i++){
+			wlist[i] = wallList.get(i).name;
+			wallNumber ++;
+		}
+		for(int i = wallNumber; i < 20; i++){
+			wlist[i] = "z0";
+		}
+		return wlist;
+		
 	}
 
 
@@ -361,7 +384,6 @@ public class Board {
 		}
 		else
 			System.out.println("Somebody tried to set some kind of bad wall");
-
 	}
 
 	private void removeWall(String w){
