@@ -54,6 +54,12 @@ public class BoardTester extends TestCase{
 		String possibleAfterMove = "4 22 12 14 ";
 		assertEquals(possibleAfterMove, testPlayerOneMoveDownThenPossible(grid));
 	}
+	@Test
+	public void testPlayerOneMoveLeftThenPossible() throws Exception{
+		Board grid = new Board(2);
+		String possibleAfterMove = "12 2 4 ";
+		assertEquals(possibleAfterMove, testPlayerOneMoveLeftThenPossible(grid));
+	}
 	//test that board is created to proper x dimensions.
 	private int getBoardSize(Board grid){
 		return grid.getSizeOfBoard();
@@ -105,6 +111,15 @@ public class BoardTester extends TestCase{
 			posslist+=poss[i] + " ";
 		}
 		return posslist;
-		
+	}
+	private String testPlayerOneMoveLeftThenPossible(Board grid){
+		int player = 0;
+		grid.setPos(player,  3);;
+		String posslist = "";
+		int [] poss = grid.getPossible(player);
+		for(int i = 0; i < poss.length; i++){
+			posslist+=poss[i] + " ";
+		}
+		return posslist;
 	}
 }
