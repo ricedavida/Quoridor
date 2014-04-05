@@ -191,6 +191,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		submit.setForeground(Color.WHITE);
 		submit.setOpaque(false);
 		submit.setBorderPainted(false);
+		submit.setOpaque(false);
+		submit.setContentAreaFilled(false);
 		submit.addActionListener(this);
 		grid.add(submit);
 		pane.add(grid);

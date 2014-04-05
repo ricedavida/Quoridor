@@ -25,6 +25,8 @@ public class HWall extends JButton{
 		this.id = id;
 		this.clicked = clicked;
 		this.setPreferredSize(new Dimension(4,12));
+		setOpaque(false);
+		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setEnabled(false);
 	}

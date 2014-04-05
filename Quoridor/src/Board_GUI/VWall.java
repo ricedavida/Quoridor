@@ -25,6 +25,8 @@ public class VWall extends JButton {
 		this.id = id;
 		this.clicked = clicked;
 		setPreferredSize(new Dimension(4,30));
+		setOpaque(false);
+		setContentAreaFilled(false);
 		setBorderPainted(false);
 		setEnabled(false);
 	}
