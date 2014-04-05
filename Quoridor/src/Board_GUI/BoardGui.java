@@ -166,23 +166,23 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		// Create 4 JLabels to hold player wall count
 		JPanel grid = new JPanel(new GridLayout(5,1));
 		grid.setOpaque(false);
-		labels[0] = new JLabel("\t\t\t" + board.getWallCount(0) + " walls remain");
+		labels[0] = new JLabel("\t\t\t\t\t\t\t" + board.getWallCount(0) + " walls remain");
 		labels[0].setForeground(Color.BLUE);
 		grid.add(labels[0]);
-		labels[1] = new JLabel("\t\t\t" + board.getWallCount(1) + " walls remain");
+		labels[1] = new JLabel("\t\t\t\t\t\t\t" + board.getWallCount(1) + " walls remain");
 		labels[1].setForeground(Color.GREEN);
 		grid.add(labels[1]);
-		labels[2] = new JLabel("\t\t\t");
+		labels[2] = new JLabel("\t\t\t\t\t\t\t");
 		labels[2].setForeground(Color.RED);
 		grid.add(labels[2]);
-		labels[3] = new JLabel("\t\t\t");
+		labels[3] = new JLabel("\t\t\t\t\t\t\t");
 		labels[3].setForeground(Color.CYAN);
 		// Add the JLabels
 		grid.add(labels[3]);
 
 		if (players == 4) {
-			labels[2].setText("\t\t\t" + board.getWallCount(2) + " walls remain");
-			labels[3].setText("\t\t\t" + board.getWallCount(3) + " walls remain");
+			labels[2].setText("\t\t\t\t\t\t\t" + board.getWallCount(2) + " walls remain");
+			labels[3].setText("\t\t\t\t\t\t\t" + board.getWallCount(3) + " walls remain");
 		}
 
 		// Create and add a Submit JButton
@@ -380,7 +380,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 
 						board.setWall(board.getCurrPlayer(), inter.getId() + "h");
 
-						labels[board.getCurrPlayer()].setText("\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
+						labels[board.getCurrPlayer()].setText("\t\t\t\t\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
 
 
 						inter.setBorderPainted(false);
@@ -392,7 +392,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 						walls.add(inter.getId()+"v");
 						board.setWall(board.getCurrPlayer(), inter.getId() + "v");
 
-						labels[board.getCurrPlayer()].setText("\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
+						labels[board.getCurrPlayer()].setText("\t\t\t\t\t\t\t" + board.getWallCount(board.getCurrPlayer()) + " walls remain");
 
 
 						inter.setBorderPainted(false);
