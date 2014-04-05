@@ -34,8 +34,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	private String submitMove = null;
 	private BoardSpace button = null;
 	private Intersect inter = null;
-	private ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
-	private ArrayList<Intersect> sect = new ArrayList<Intersect>();
+	public ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
+	public ArrayList<Intersect> sect = new ArrayList<Intersect>();
 	private ArrayList<String> walls = new ArrayList<String>();
 	private ArrayList<BoardSpace> movableSpace = new ArrayList<BoardSpace>();
 	private JLabel[] labels = new JLabel[4];
