@@ -78,7 +78,7 @@ public class BoardSpace extends JButton{
 			super.paintComponent(g);
 		} else {
 			g.setColor(color);
-			g.fillOval(4, 4, 20, 20);
+			g.fillOval(3, 3, 19, 19);
 		}
 
 		// handle the possible locations
