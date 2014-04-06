@@ -30,7 +30,7 @@ public class BoardSpace extends JButton{
 		color = Color.BLUE;
 		setForeground(color);
 		setBackground(new Color(100,50,50));
-		setPreferredSize(new Dimension(20,30));
+		setPreferredSize(new Dimension(22,30));
 		setOpaque(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
