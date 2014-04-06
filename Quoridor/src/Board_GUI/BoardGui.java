@@ -396,6 +396,9 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 
 
 						inter.setBorderPainted(false);
+						inter.setOpaque(false);
+						inter.setContentAreaFilled(false);
+						
 						inter.setClicked(true);
 						inter.setEnabled(false);
 						submitMove = null;
