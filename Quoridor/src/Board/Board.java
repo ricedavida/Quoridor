@@ -567,18 +567,25 @@ public class Board {
 			for(int i = 0; i < distance.length; i++)
 				distance[i] = Integer.MAX_VALUE;
 			int [] end = playerList[0].getEnd();
-			for(int i = 0; i < distance.length; i++){
+			for(int i = 0; i < possib.length; i++){
 				int tempDist =distance[i];
 				for(int j = 0; j < end.length; j++){
-					int temp = end[i] - possib[j];
+					int temp = end[j] - possib[i];
 					if(temp <= tempDist){
 						tempDist = temp;
 					}
 					distance[j] = tempDist;
 				}
 			}
+			int goHere = 0;
+			int temp = distance[0];
+			for(int i = 0; i < distance.length; i++){
+				if(temp > distance[i]){
+					goHere = i;
+				}
+			}
+			return 0 + playerOnePathCheck(possib[goHere]);
 		}
-		return 0;
 	}
 
 	public int playerAt(int pos){
@@ -603,7 +610,16 @@ public class Board {
 		}
 		return winFlag;
 	}
-
+	// add method to check to see if a space is in a player's win set.
+	public boolean victorySoon(int playerId, int space){
+		int [] winSpaces = playerList[playerId].getEnd();
+		boolean flag = false;
+		for(int i = 0; i < winSpaces.length; i++){
+			if(space == winSpaces[i])
+				flag = true;
+		}
+		return flag;
+	}
 	private void unvisit(){
 		for(int i = 0; i < playingGrid.length; i++)
 		{
