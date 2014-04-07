@@ -47,15 +47,16 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	// create the BoardGui based on a player count
 	public BoardGui(int players, Board board) {
 		super();
+		this.setTitle("Quoridor");
 		this.players = players;
 		this.board = board;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// setting the background specific to the player count
 		if (players == 4) {
-			wood = new ImageIcon("board_4players_linux.jpg").getImage();
+			wood = new ImageIcon("board_4players.jpg").getImage();
 		} else {
-			wood = new ImageIcon("board_2players_linux.jpg").getImage();
+			wood = new ImageIcon("board_2players.jpg").getImage();
 		}
 
 		setContentPane(new ImagePanel(wood));

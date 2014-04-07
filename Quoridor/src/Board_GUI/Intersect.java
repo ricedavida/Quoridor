@@ -49,10 +49,8 @@ public class Intersect extends JButton {
 	
 	// hide or show the intersect
 	public void paintComponent(Graphics g) {
-		if (clicked) {
+		if (!clicked) {
 			super.paintComponent(g);
-			g.setColor(color);
-			g.fillRect(0, 0, getWidth(), getHeight());
 		} else {
 			g.setColor(color);
 			g.fillRect(0, 0, getWidth(), getHeight());
