@@ -91,6 +91,69 @@ public class Board {
 			System.out.println("Invalid player configuration.");
 		}
 	}
+	//  adding special testing constructor
+	// call theis with (int num, int a, int b, int c, int d)
+	// the goal of this constructor is to place players in
+	// specific places. that way we can test specific interactions better
+	public Board(int playerCount, int a, int b, int c, int d){
+		playerList = new Players[playerCount];
+		playingGrid = new Board.space[81];
+		numPlayers = playerCount;
+		playerNow = 0;
+		for(int i = 0; i < 81; i++){
+			playingGrid[i] = new space();
+		}
+		for(int i = 0; i < playingGrid.length; i++){
+			if(i >=0 && i <=8)
+				playingGrid[i].canGo[0] = false;
+			else if(i >=72 && i <= 80)
+				playingGrid[i].canGo[1] = false;
+			else if(i % 9 == 8)
+				playingGrid[i].canGo[3] = false;
+			else if (i % 9 == 0)
+				playingGrid[i].canGo[2] = false;
+		}
+		for(int i = 0; i < playerCount; i++ )
+			// list of players goes 0 - 3
+			// location, walls, ect set in construction
+			playerList[i] = new Players(i, playerCount);
+		if(playerCount == 2){
+			//player 1
+			// test only 
+			if(a >= 0 && a < 81){
+				playingGrid[a].hasPawn = true; 
+				playerList[0].move(a);
+			}
+			if(b >=0 && b < 81){
+				//player 2
+				playingGrid[b].hasPawn = true;
+				playerList[1].move(b);
+			}
+		}
+		else if(playerCount == 4){
+			// player 1
+			if(a >=0 && a < 81){
+				playingGrid[a].hasPawn = true;
+				playerList[0].move(a);
+			}
+			// player 2
+			if(b >= 0 && b < 81){
+				playingGrid[b].hasPawn = true;
+				playerList[1].move(b);
+			}
+			// player 3
+			if(c >= 0 && c < 81){
+				playingGrid[c].hasPawn = true;
+				playerList[2].move(c);
+			}
+			// player 4
+			if(d >= 0 && d < 81){
+				playingGrid[d].hasPawn = true;
+				playerList[3].move(d);
+			}
+		}
+	// end test constructor.		
+	}
 	public boolean checkSpace(int x){
 		if(playingGrid[x].hasPawn)
 			return true;
