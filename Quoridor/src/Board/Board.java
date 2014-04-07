@@ -435,7 +435,7 @@ public class Board {
 		//*******
 		// no-fucntional path algorithm
 		// *****
-		
+/*		
 		placeWall(w);
 		int pathCount = 0; 
 		for(int i = 0; i < playerList.length; i++){
@@ -449,8 +449,9 @@ public class Board {
 		if(pathCount != this.getPlayerCount())
 			return false;
 		removeWall(w);
-		
+	*/	
 		return true;
+
 	}
 
 	public boolean checkMove(int playerId, int newPos){
