@@ -328,7 +328,7 @@ public class Board {
 		//*******
 		// no-fucntional path algorithm
 		// *****
-		/*
+		
 		placeWall(w);
 		int pathCount = 0; 
 		for(int i = 0; i < playerList.length; i++){
@@ -342,7 +342,7 @@ public class Board {
 		if(pathCount != this.getPlayerCount())
 			return false;
 		removeWall(w);
-		*/
+		
 		return true;
 	}
 
@@ -435,6 +435,7 @@ public class Board {
 
 				int t;
 				t = 0;
+				// INSTEAD OF FOR, DO EM SEQUENTIAL
 				for(int i = 0; i < possible.length; i++){
 					t= t+ pathChecker(player, possible[i]);
 				}
