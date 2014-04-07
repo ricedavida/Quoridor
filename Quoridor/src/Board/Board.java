@@ -207,24 +207,40 @@ public class Board {
 			int[] nullReturn = {-1};
 			return nullReturn;
 		}
-		else{	
+		// assuming the player is actually in the game
+		else{
+			// curent position is the position of the player we wonder about.
 			int pos = playerList[playerId].getPos();
+			// since we don't know how many possible spaces there will be, use array list
 			ArrayList <Integer> possibilities = new ArrayList<Integer>();
+			// loop over cardinal directions. 0 = north, 2 = west
 			for(int i = 0; i < 4; i++){
+				// mark pos as visited so we can ignore it later
 				playingGrid[pos].visited2 = true;
+				// look for walls in the way
 				if(playingGrid[pos].canGo[i]){
+					// going north
+					// recursive call for if we need to quantum leap
+					// only do this if there is a pawn next door and we have not visited that square
+					// populate make a new array with the returned possible values
+					// dump that into an array list
 					if(i == 0){
+						// space above pos, north wise
 						int newPos = pos-9;
+						
 						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
 							int[] possi = getPossible(playerAt(newPos));
 							for(int j = 0; j < possi.length; j++)
 								possibilities.add(possi[j]);
 							unvisit2();
 						}
+						// no pawns? this space is where we stop, providing we didnt look here already
 						else{
-							possibilities.add(newPos);
+							if(!playingGrid[newPos].visited2)
+								possibilities.add(newPos);
 						}	
 					}
+					// same as above, only look south
 					else if(i == 1){
 						int newPos = pos+9;
 						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
@@ -234,9 +250,11 @@ public class Board {
 							unvisit2();
 						}
 						else{
-							possibilities.add(newPos);
+							if(!playingGrid[newPos].visited2)
+								possibilities.add(newPos);
 						}	
 					}
+					// looking west this time
 					else if(i == 2){
 						int newPos = pos-1;
 						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
@@ -246,9 +264,11 @@ public class Board {
 							unvisit2();
 						}
 						else{
-							possibilities.add(newPos);
+							if(!playingGrid[newPos].visited2)
+								possibilities.add(newPos);
 						}	
 					}
+					// looking east
 					else if(i == 3){
 						int newPos = pos+1;
 						if(playingGrid[newPos].hasPawn && !playingGrid[newPos].visited2){
@@ -258,12 +278,16 @@ public class Board {
 							unvisit2();
 						} 
 						else{
-							possibilities.add(newPos);
+							if(!playingGrid[newPos].visited2)
+								possibilities.add(newPos);
 						}	
 					}
 				}
-
 			}
+			// make sure that all spaces marked as unvisited. 
+			// dont want to clutter up the board and skew other data
+			// make an array, and return it to whoever wanted the possible moves. 
+			unvisit2();
 			int[] p = new int[possibilities.size()];
 			for(int i = 0; i < p.length; i++)
 				p[i] = possibilities.get(i);
