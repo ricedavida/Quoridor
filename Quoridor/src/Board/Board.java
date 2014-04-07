@@ -594,7 +594,7 @@ public class Board {
 	// compare the current position to the array of win positions. 
 	// return true if the player passed in has reached a win square
 	// return false if the player passed has not reached a win state
-	private boolean playerHasWon(int playerId){
+	public boolean playerHasWon(int playerId){
 		boolean winFlag = false;
 		int [] winList = playerList[playerId].getEnd();
 		for(int i = 0; i < winList.length; i++){
