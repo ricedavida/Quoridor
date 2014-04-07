@@ -354,7 +354,7 @@ public class Board {
 	// this method exists to pass a string representation of the board to the AI
 	// each space will be represented by a set of 0s and 1s
 	// representing north, south, east and west in that order
-	// 1 = wall in that direction
+	// w = wall in that direction
 	// 0 = no wall
 	// important note!
 	// the sides of the board treat the edges like walls
@@ -454,7 +454,7 @@ public class Board {
 			return false;
 		removeWall(w);
 	*/	
-		
+	
 		return true;
 
 	}
@@ -558,8 +558,30 @@ public class Board {
 			}
 		}
 	}
+	private int playerOnePathCheck(int pos){
+		if(this.playerHasWon(0))
+			return 1;
+		else{
+			int [] possib = this.getPossible(0);
+			int [] distance = new int [possib.length];
+			for(int i = 0; i < distance.length; i++)
+				distance[i] = Integer.MAX_VALUE;
+			int [] end = playerList[0].getEnd();
+			for(int i = 0; i < distance.length; i++){
+				int tempDist =distance[i];
+				for(int j = 0; j < end.length; j++){
+					int temp = end[i] - possib[j];
+					if(temp <= tempDist){
+						tempDist = temp;
+					}
+					distance[j] = tempDist;
+				}
+			}
+		}
+		return 0;
+	}
 
-	private int playerAt(int pos){
+	public int playerAt(int pos){
 		int playerYouWant = -1;
 		for( int i = 0; i < playerList.length; i++){
 			if(playerList[i].getPos() == pos)
