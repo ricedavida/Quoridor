@@ -343,7 +343,7 @@ public class Board {
 		int inPlay = wallList.size();
 		for(int i = 0; i < inPlay; i++){
 			wlist[i] = wallList.get(i).name;
-			wallNumber ++;
+		wallNumber ++;
 		}
 		for(int i = wallNumber; i < 20; i++){
 			wlist[i] = "z0";
@@ -351,7 +351,27 @@ public class Board {
 		return wlist;
 		
 	}
-
+	// this method exists to pass a string representation of the board to the AI
+	// each space will be represented by a set of 0s and 1s
+	// representing north, south, east and west in that order
+	// 1 = wall in that direction
+	// 0 = no wall
+	// important note!
+	// the sides of the board treat the edges like walls
+	// all spaces are separated by a space.
+	public String getBoardState(){
+		String boardBuffer = "";
+		for(int i = 0; i < playingGrid.length; i++){
+			for(int j = 0; j < playingGrid[i].canGo.length; j++){
+				if(playingGrid[i].canGo[j])
+					boardBuffer += 0;
+				else
+					boardBuffer += 1;
+			}
+			boardBuffer += " ";
+		}
+		return boardBuffer;
+	}
 
 	// here there be helper functions. all private. 
 	// from here on, all player id are form internal function, all coded knowing that
