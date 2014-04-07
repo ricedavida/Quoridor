@@ -366,8 +366,12 @@ public class Board {
 				if(playingGrid[i].canGo[j])
 					boardBuffer += 0;
 				else
-					boardBuffer += 1;
+					boardBuffer += "w";
 			}
+			if(playingGrid[i].hasPawn)
+				boardBuffer += (this.playerAt(i)+1);
+			else
+				boardBuffer += "-";
 			boardBuffer += " ";
 		}
 		return boardBuffer;
@@ -435,7 +439,7 @@ public class Board {
 		//*******
 		// no-fucntional path algorithm
 		// *****
-/*		
+	/*	
 		placeWall(w);
 		int pathCount = 0; 
 		for(int i = 0; i < playerList.length; i++){
@@ -450,6 +454,7 @@ public class Board {
 			return false;
 		removeWall(w);
 	*/	
+		
 		return true;
 
 	}
