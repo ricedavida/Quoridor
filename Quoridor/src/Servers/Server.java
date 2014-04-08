@@ -2,9 +2,6 @@
  * Server.java
  * Authors: David Rice - based on code provided by Dr. Ladd
  */ 
- /** This is a simple server that will take a string from a client, and pass it
-  * to all other clients.
- */
 package Servers;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,6 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/** This is a simple server that will take a string from a client, and pass it to all other clients */
 public class Server {
     /** Default port number; used if none is provided. */
     public final static int DEFAULT_PORT_NUMBER = 3939;
