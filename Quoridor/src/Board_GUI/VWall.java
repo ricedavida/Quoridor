@@ -4,9 +4,6 @@ package Board_GUI;
  * Authors: David Rice
  * Last updated: March 12, 7:25 David Rice
  */ 
- /** This File builds a vertical wall for the Quoridor game. It will represent
- * a wall on the board.
- */
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +11,7 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
+/** This File builds a vertical wall for the Quoridor game. It will represent a wall on the board. */
 public class VWall extends JButton {
 	private String id; // the name of the id
 	private boolean clicked = false; // is there a player in the space

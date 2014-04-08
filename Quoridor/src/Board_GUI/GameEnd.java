@@ -4,14 +4,12 @@ package Board_GUI;
  * Authors: David Rice
  * Last updated: March 12, 7:08 David Rice
  */ 
-/** This File will create an end of game dialogue for the Quoridor game.  It will
-* create a new game or end the game based on user input.
-*/
 
 import javax.swing.JOptionPane;
 
 import Board.Board;
 
+/** This File will create an end of game dialogue for the Quoridor game.  It will create a new game or end the game based on user input. */
 public class GameEnd {
 
 	public GameEnd(int playerCount, int winningPlayer, BoardGui frame) {

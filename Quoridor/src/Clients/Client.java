@@ -3,10 +3,6 @@ package Clients;
  * Client.java - program001
  * Authors: David Rice - based on code provided by Dr. Ladd
  */ 
- /** This is a simple client that prompts a user for a string, sends that string
- * to a server, and listens for a response.  If the string is 'quit', it will
- * cleanly exit.
- */
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -16,6 +12,7 @@ import java.io.PrintStream;
 
 import java.util.Scanner;
 
+/** This is a simple client that prompts a user for a string, sends that string to a server, and listens for a response.  If the string is 'quit', it will cleanly exit. */
 public class Client {
     /** Default port number; used if none is provided. */
     public final static int DEFAULT_PORT_NUMBER = 3939;

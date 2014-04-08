@@ -5,16 +5,13 @@ package Board_GUI;
  * Last updated: March 12, 7:16 David Rice
  */
 
- /** This File builds a horizontal wall for the Quoridor game. It will represent
- * a wall on the board.
- */
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.*;
 
+/** This File builds a horizontal wall for the Quoridor game. It will represent a wall on the board. */
 public class HWall extends JButton{
 	private String id; // the name of the id
 	private boolean clicked = false; // is there a player in the space
