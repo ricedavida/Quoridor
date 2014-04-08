@@ -3,8 +3,8 @@ package Board_GUI;
  * name of file: VWall.java
  * Authors: David Rice
  * Last updated: March 12, 7:25 David Rice
- * 
- * This File builds a vertical wall for the Quoridor game. It will represent
+ */ 
+ /** This File builds a vertical wall for the Quoridor game. It will represent
  * a wall on the board.
  */
 

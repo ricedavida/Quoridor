@@ -3,8 +3,8 @@ package Board_GUI;
  * name of file: BoardGui.java
  * Authors: David Rice
  * Last updated: March 12, 6:38 David Rice
- * 
- * This File builds the GUI for the Quoridor game.  It passes and reads strings
+ */
+ /** This File builds the GUI for the Quoridor game.  It passes and reads strings
  * to the back end so the board state will change. 
  */
 

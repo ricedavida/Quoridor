@@ -3,8 +3,8 @@ package Board_GUI;
  * name of file: Intersect.java
  * Authors: David Rice
  * Last updated: March 12, 7:27 David Rice
- * 
- * This File will create an Intersect for the Quoridor game.  It will control
+ */ 
+ /** This File will create an Intersect for the Quoridor game.  It will control
  * where a wall can be placed on the board.
  */
 import java.awt.Color;

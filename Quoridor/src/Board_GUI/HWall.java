@@ -3,8 +3,9 @@ package Board_GUI;
  * name of file: HWall.java
  * Authors: David Rice
  * Last updated: March 12, 7:16 David Rice
- * 
- * This File builds a horizontal wall for the Quoridor game. It will represent
+ */
+
+ /** This File builds a horizontal wall for the Quoridor game. It will represent
  * a wall on the board.
  */
 

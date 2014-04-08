@@ -1,11 +1,13 @@
+package Clients;
 /*
  * Client.java - program001
  * Authors: David Rice - based on code provided by Dr. Ladd
- * This is a simple client that prompts a user for a string, sends that string
+ */ 
+ /** This is a simple client that prompts a user for a string, sends that string
  * to a server, and listens for a response.  If the string is 'quit', it will
  * cleanly exit.
  */
-package Clients;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
 

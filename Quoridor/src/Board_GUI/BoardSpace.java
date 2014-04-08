@@ -3,8 +3,8 @@ package Board_GUI;
  * name of file: BoardSpace.java
  * Authors: David Rice
  * Last updated: March 12, 7:08 David Rice
- * 
- * This File will create a BoardSpace for the Quoridor game.  It will represent
+ */ 
+ /** This File will create a BoardSpace for the Quoridor game.  It will represent
  * where a given player is on the board.
  */
 

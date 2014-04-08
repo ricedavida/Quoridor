@@ -1,4 +1,10 @@
 package Clients;
+/*
+ * main.java
+ * Authors: David Rice
+ */ 
+ /** This is the main for the Quoridor gamge.
+ */
 
 import java.awt.AWTException;
 import java.awt.Color;

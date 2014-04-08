@@ -1,8 +1,9 @@
 /*
- * Server.java - program001
+ * Server.java
  * Authors: David Rice - based on code provided by Dr. Ladd
- * This is a simple server that will take a string from a client, reverse that
- * string, and send it back to the user.
+ */ 
+ /** This is a simple server that will take a string from a client, and pass it
+  * to all other clients.
  */
 package Servers;
 import java.io.IOException;
