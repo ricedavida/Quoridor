@@ -32,17 +32,19 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	private String submitMove = null;
 	private BoardSpace button = null;
 	private Intersect inter = null;
+	
+	/** Space will holds an ArrayList of BoardSpace, it stores the state of all spaces on the board */
 	public ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
+	/** Space will holds an ArrayList of Intersect, it stores the state of all Intersect buttons (how a wall is set) on the board */
 	public ArrayList<Intersect> sect = new ArrayList<Intersect>();
 	private ArrayList<String> walls = new ArrayList<String>();
-	private ArrayList<BoardSpace> movableSpace = new ArrayList<BoardSpace>();
 	private JLabel[] labels = new JLabel[4];
 	private int currentPosition = 0; // this is how the board will keep track of board space
 	private int newPosition = 0; // this is how the board will keep track of board space
 
 	private Board board;
 
-	// create the BoardGui based on a player count
+	/** create the BoardGui by passing # of players(int), and a Board object */
 	public BoardGui(int players, Board board) {
 		super();
 		this.setTitle("Quoridor");
@@ -71,6 +73,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	// The Intersects will represent wall position
 	// JLabels will keep track of player state
 	// JButton will be used to submit the player move
+	/** This will create the GUI Game board pane by being passed a Container */
 	public void addComponentsToPane(Container pane) {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -198,13 +201,12 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		pane.add(grid);
 	}
 
+	/** Paint the position of a player, by passing it a player #(int) */
 	public void paintPos(int player) {
 		// This sets the initial possible moves for player 1
 		int[] pos = board.getPossible(player);
 
 		for (int i = 0 ; i < pos.length ; i++) {
-
-			/* FIX HERE: when Ed gives me the method to fix this, check for winning state*/
 			if (board.victorySoon(board.getCurrPlayer(), pos[i])) {
 				space.get(pos[i]).setColor(Color.MAGENTA);
 				space.get(pos[i]).setPotential(true);
@@ -217,6 +219,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		}
 	}
 
+	/** Remove paint from the position of a player, by passing it a player #(int) */
 	public void removePos(int player) {
 		// This sets the initial possible moves for player 1
 		int[] pos = board.getPossible(player);
@@ -226,6 +229,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		}
 	}
 
+	/** Remove paint from the position of a player, by passing it a player #(int) and passing the current space (int) */
 	public void removeOldMoves(int player, int currSpace) {
 		// This sets the initial possible moves for player 1
 		int[] pos = board.getPossible(player);
@@ -238,17 +242,16 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 
 	}
 
-	// This paint method will draw the background image onto the board
+	/** This paint method will draw the background image onto the board */
 	@Override
 	public void paint(Graphics g){
 		g2d = (Graphics2D)g;
 		g2d.clearRect(0, 0, getWidth(), getHeight());
 		g2d.drawImage(wood,0,0,getWidth(),getHeight(),null);
 		super.paint(g2d);
-
 	}
 
-
+	/** Select a space by passing the current position(int) */
 	public void selectSpace(int currentPosition){
 		space.get(currentPosition).setClicked(false);
 		space.get(currentPosition).setLastSpace(true);
@@ -260,6 +263,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		placed = button.getId();
 	}
 
+	/** Deselect a space by passing the current position(int) */
 	public void deselectSpace(int currentPosition){	
 		submitMove = null;
 		placed = null;
@@ -270,6 +274,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		space.get(currentPosition).repaint();
 	}
 
+	/** Select a horizontal wall */
 	public void selectHWall() {
 		placed = inter.getId();
 		inter.setWall(1);
@@ -285,6 +290,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		right.repaint();
 	}
 
+	/** Select a vertical wall */
 	public void selectVWall() {
 		placed = inter.getId();
 		inter.setWall(2);
@@ -311,6 +317,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		bottom.repaint();
 	}
 
+	/** Deselect all walls from an Intersect */
 	public void deselectWall() {
 		placed = null;
 		submitMove = null;
@@ -325,6 +332,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		bottom.repaint();
 	}
 
+	/** Submit an HWall */
 	public void submitHWall() {
 		walls.add(inter.getId()+"h");
 
@@ -343,12 +351,12 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		placed = null;
 	}
 
+	/** Submit an VWall */
 	public void submitVWall() {
 		walls.add(inter.getId()+"v");
 		board.setWall(board.getCurrPlayer(), inter.getId() + "v");
 
 		labels[board.getCurrPlayer()].setText("\t\t\t " + board.getWallCount(board.getCurrPlayer()) + " walls remain");
-
 
 		inter.setBorderPainted(false);
 		inter.setOpaque(false);
@@ -360,6 +368,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		placed = null;
 	}
 
+	/** Submit a space */
 	public void submitSpace() {
 		removePos(board.getCurrPlayer());
 		space.get(currentPosition).setPotential(false);
@@ -375,6 +384,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		placed = null;
 	}
 
+	/** Switch current player */
 	public void iteratePlayers() {
 		if (players == 4) {
 			board.setCurrPlayer((board.getCurrPlayer()+1)%4);
@@ -382,9 +392,9 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 			board.setCurrPlayer((board.getCurrPlayer()+1)%2);
 		}
 	}
-
-	// This actionPerformed method will handle the state on the board
+	
 	@Override
+	/** This actionPerformed method will handle the state on the board */
 	public void actionPerformed(ActionEvent e) {
 		// Handle BoardSpace clicking 
 		if (e.getSource() instanceof BoardSpace) {
@@ -458,53 +468,51 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		}
 	}
 
-	// this inner class will just create an image used as the background for our board
+	/** this inner class will just create an image used as the background for our board */
 	class ImagePanel extends JComponent {
 		private Image image;
 
-		// create a ImagePangel by passing an image
+		/** create a ImagePangel by passing an Image */
 		public ImagePanel(Image image) {
 			this.image = image;
 		}
 
-		// This will paint the image it is provided
 		@Override
+		/** This will paint the image it is provided */
 		protected void paintComponent(Graphics g) {
 			g.drawImage(image, 0, 0, null);
 		}
 	}
 
-	// this will change the text color on the Submit button to green
-	// when the mouse is over the button
+	
 	@Override
+	/** this will change the text color on the Submit button to green when the mouse is over the button */
 	public void mouseEntered(MouseEvent e) {
 		submit.setForeground(Color.GREEN);
 	}
 
-	// this will change the text color on the Submit button to white
-	// when the mouse is not over the button
+	
 	@Override
+	/** this will change the text color on the Submit button to white when the mouse is not over the button */
 	public void mouseExited(MouseEvent e) {
 		submit.setForeground(Color.WHITE);
 	}
 
-	//NOT CURRENTLY USED
+	
 	@Override
+	/** NOT CURRENTLY USED */
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	// this will change the text color on the Submit button to blue
-	// when the mouse is clicking the button
 	@Override
+	/** this will change the text color on the Submit button to blue when the mouse is clicking the button */
 	public void mousePressed(MouseEvent e) {
 		submit.setForeground(Color.BLUE);
 	}
 
-	// this will change the text color on the Submit button to green
-	// when the mouse is done clicking the button
 	@Override
+	/** this will change the text color on the Submit button to green when the mouse is done clicking the button */
 	public void mouseReleased(MouseEvent e) {
 		submit.setForeground(Color.GREEN);
 	}
-
 }

@@ -17,7 +17,7 @@ public class VWall extends JButton {
 	private boolean clicked = false; // is there a player in the space
 	private Color color = Color.lightGray; // the color of the player
 	
-	// Construct a vertical wall by passing it 2 Strings and a boolean variable
+	/** Construct a vertical wall by passing it 2 Strings and a boolean variable */
 	public VWall(String n, String id, boolean clicked){
 		super(n);
 		this.id = id;
@@ -29,17 +29,18 @@ public class VWall extends JButton {
 		setEnabled(false);
 	}
 
-	// set the field to be a wall
+	/** set the field to be a wall by passing a boolean */
 	public void setClicked(boolean clicked) {
 		this.clicked = clicked;
 	}
 
-	// check if the wall is set
+	/** check if the wall is set */
 	public boolean isClicked() {
 		return this.clicked;
 	}
 
-	// paint or remove paint from the wall
+	@Override
+	/** paint or remove paint from the wall */
 	public void paintComponent(Graphics g) {
 		if (!clicked) {
 			super.paintComponent(g);
@@ -49,12 +50,12 @@ public class VWall extends JButton {
 		}
 	}
 
-	// get the wall id
+	/** get the wall id */
 	public String getId() {
 		return id;
 	}
 
-	// set the wall id
+	/** set the wall id */
 	public void setId(String id) {
 		this.id = id;
 	}

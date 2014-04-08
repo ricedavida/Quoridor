@@ -20,7 +20,7 @@ public class BoardSpace extends JButton{
 	private Color color; // the color of the player
 	private Color lastSpaceColor = Color.DARK_GRAY;
 
-	// Construct a BoardSpace by passing it 2 Strings and a boolean variable
+	/** Construct a BoardSpace by passing it 2 Strings and a boolean variable */
 	public BoardSpace(String n, String id, boolean clicked){
 		super(n);
 		this.id = id;
@@ -34,42 +34,43 @@ public class BoardSpace extends JButton{
 		setBorderPainted(false);
 	}
 
-	// set the color of a player
+	/** set the color of a player by passing a Color */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 
-	// set the field to be a player
+	/** set the field to be a player by passing a boolean */
 	public void setClicked(boolean clicked) {
 		this.clicked = clicked;
 	}
 
-	// check if the field is a player
+	/** check if the field is a player */
 	public boolean isClicked() {
 		return this.clicked;
 	}
 
-	// set the field to be a player
+	/** set the field to be where a player was before a submit by passing a boolean */ 
 	public void setLastSpace(boolean lastSpace) {
 		this.lastSpace = lastSpace;
 	}
 
-	// check if the field is a player
+	/** check if the field is where a player was before a submit */
 	public boolean isLastSpace() {
 		return this.lastSpace;
 	}
 
-	// set the field to be a possible
+	/** set the field to be a possible by passing a boolean */
 	public void setPotential(boolean potential) {
 		this.potential = potential;
 	}
 
-	// check if the is a possible 
+	/** check if the is a possible */ 
 	public boolean getPotential() {
 		return this.potential;
 	}
 
-	// paint the state of the space
+	@Override
+	/** paint the state of the space */
 	public void paintComponent(Graphics g) {
 		// handle player's location
 		if (!clicked) {
@@ -107,11 +108,12 @@ public class BoardSpace extends JButton{
 
 	}
 
-	// get the space's name
+	/** get the space's name */
 	public String getId() {
 		return id;
 	}
-	// set the space's name
+	
+	/** set the space's name by passing a String */
 	public void setId(String id) {
 		this.id = id;
 	}

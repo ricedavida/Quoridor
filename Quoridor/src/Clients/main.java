@@ -16,8 +16,10 @@ import Board_GUI.BoardGui;
 import Board_GUI.GameEnd;
 import Board.Board;
 
-/** This is the main for the Quoridor gamge. */
+/** This is the main for the Quoridor game */
 public class main {
+	
+	/** This is the main for the Quoridor game */
 	public static void main (String [] args) throws AWTException {
 		int xButtonOffset = 16;
 		int yButtonOffset = 63;
