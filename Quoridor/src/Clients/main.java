@@ -14,6 +14,15 @@ import Board.Board;
 
 public class main {
 	public static void main (String [] args) throws AWTException {
+		int xButtonOffset = 16;
+		int yButtonOffset = 63;
+		
+		int xInstersectOffset = 7;
+		int yInstersectOffset = 51;
+		
+		
+		int [] submitButton = {530, 390};
+		
 		Board board = new Board(2);
 
 		board.setCurrPlayer(0);
@@ -24,17 +33,7 @@ public class main {
 		frame.setVisible(true);
 
 		//GameEnd end = new GameEnd(board.getPlayerCount(), 0);
-
-		int xButtonOffset = 16;
-		int yButtonOffset = 63;
-
-		int xInstersectOffset = 7;
-		int yIntersectOffset = 51;
-
-		int [] submitButton = {530,390};
-
-
-
+		/*
 		Robot bot = new Robot();
 		// Spaces
 		bot.mouseMove(frame.space.get(3).getX()+xButtonOffset,
@@ -46,7 +45,7 @@ public class main {
 		try{Thread.sleep(250);}catch(InterruptedException e){}
 		bot.mouseRelease(InputEvent.BUTTON1_MASK);
 
-		/* Rest for a little while */
+		// Rest for a little while 
 		try{Thread.sleep(900,000);}catch(InterruptedException e){}
 
 		// Submit
@@ -58,20 +57,20 @@ public class main {
 		try{Thread.sleep(250);}catch(InterruptedException e){}
 		bot.mouseRelease(InputEvent.BUTTON1_MASK);
 
-		/* Rest for a little while */
+		// Rest for a little while 
 		try{Thread.sleep(900,000);}catch(InterruptedException e){}
 
 		// Intersects
 		bot.mouseMove(frame.sect.get(17).getX()+xInstersectOffset,
-				frame.sect.get(17).getY()+yIntersectOffset);
-		
+				frame.sect.get(17).getY()+yInstersectOffset);
+
 		bot.mousePress(InputEvent.BUTTON1_MASK);
 		//add time between press and release or the input event system may 
 		//not think it is a click
 		try{Thread.sleep(250);}catch(InterruptedException e){}
 		bot.mouseRelease(InputEvent.BUTTON1_MASK);
 
-		/* Rest for a little while */
+		// Rest for a little while 
 		try{Thread.sleep(900,000);}catch(InterruptedException e){}
 
 		// Submit
@@ -82,7 +81,8 @@ public class main {
 		//not think it is a click
 		try{Thread.sleep(250);}catch(InterruptedException e){}
 		bot.mouseRelease(InputEvent.BUTTON1_MASK);
-
+		*/
+		
 	}
 }
 

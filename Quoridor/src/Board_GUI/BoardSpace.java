@@ -95,6 +95,9 @@ public class BoardSpace extends JButton{
 			} else if (color.equals(Color.CYAN)){
 				g.setColor(new Color(.25f, .25f, .75f, 0.60f));
 				g.fillRect(0, 0, getWidth(), getHeight());
+			} else if (color.equals(Color.MAGENTA)){
+				g.setColor(Color.MAGENTA);
+				g.fillRect(0, 0, getWidth(), getHeight());
 			}
 		}
 		if (!lastSpace) {
