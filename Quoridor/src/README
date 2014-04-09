@@ -5,7 +5,6 @@ Edward Pryor
 Kamaal Gilkes
 
 
-
 Fried Rice coding standards:
 method names                -                   camel case (example: theBigDig())
 curly brace placement       -                   end of line (example: theBigDig() {)
