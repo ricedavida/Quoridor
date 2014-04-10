@@ -39,6 +39,9 @@ public class main {
 		frame.setResizable( false );
 		frame.setVisible(true);
 
+		
+		
+		
 		//GameEnd end = new GameEnd(board.getPlayerCount(), 0);
 		/*
 		Robot bot = new Robot();

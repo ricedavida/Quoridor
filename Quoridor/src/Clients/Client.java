@@ -23,6 +23,16 @@ public class Client {
     /** Command-line switches */
     public final static String ARG_PORT = "--port";
     public final static String ARG_MACHINE = "--machine";
+    
+    /** Message op-codes */
+    public final static String MSG_HELLO = "Hello";
+    public final static String MSG_GOODBYE = "Goodbye";
+
+    /** Commands */
+    public final static String COMMAND_PREFIX = "\\";
+    public final static String COMMAND_BYE = "\\bye";
+
+    public final static String PROMPT = "Message> ";
 
     /** Name of the machine where the server is running. */
     private String machineName;
@@ -44,30 +54,38 @@ public class Client {
     }
 
     public void run() {
-        try {
-            Socket socket = new Socket(machineName, portNumber);
-            PrintStream sout = new PrintStream(socket.getOutputStream());
-            Scanner sin = new Scanner(socket.getInputStream());
+    	try {
+    	      Socket socket = new Socket(machineName, portNumber);
+    	      PrintStream sout = new PrintStream(socket.getOutputStream());
+    	      Scanner sin = new Scanner(socket.getInputStream());
 
-            // Prompt the user for a string, and add the instructions on how
-            // to cleanly exit.
-            System.out.println("Please enter a string that you would like reversed, type \"quit\" to end");
-            System.out.print("Sending: ");
-            
-            // Loop on the scanner until "quit" has been entered
-            while (keyboard.hasNextLine()) {
-                String msg = keyboard.nextLine();
+    	      System.out.format("Sending \"%s\"", MSG_HELLO);
+    	      sout.println(MSG_HELLO);
 
-                // if "quit is entered, exit cleanly
-                if (msg.equals(QUITMESSAGE))
-                  break;
+    	      System.out.println("Receiving from server");
 
-                sout.println(msg);
-                String serverResponse = sin.nextLine();
-                System.out.format("Client saw \"%s\"\nSending: ", serverResponse);
-            }
-            sout.close();
-            sin.close();
+    	      String serverResponse = sin.nextLine();
+    	      System.out.format("Client saw \"%s\"\n", serverResponse);
+
+    	      System.out.print(PROMPT);
+
+    	      while (keyboard.hasNextLine()) {
+    	        String msg = keyboard.nextLine();
+
+    	        if (msg.equals(COMMAND_BYE))
+    	          break;
+
+    	        sout.println(msg);
+    	        serverResponse = sin.nextLine();
+    	        System.out.format("Client saw \"%s\"\n", serverResponse);
+    	        System.out.print(PROMPT);
+    	      }
+
+    	      System.out.format("Sending \"%s\"", MSG_GOODBYE);
+    	      sout.println(MSG_GOODBYE);
+
+    	      sout.close();
+    	      sin.close();
         } catch (UnknownHostException uhe) {
             // the host name provided could not be resolved
             uhe.printStackTrace();
@@ -76,36 +94,6 @@ public class Client {
             // there was a standard input/output error (lower-level)
             ioe.printStackTrace();
             System.exit(1);
-        }
-    }
-    
-    public String Respond(String str) {
-        try {
-            Socket socket = new Socket(machineName, portNumber);
-            PrintStream sout = new PrintStream(socket.getOutputStream());
-            Scanner sin = new Scanner(socket.getInputStream());
-            
-            for(int i=0 ; i < 100000 ; i++) {
-            	sout.println(str);
-            	System.out.println("here" + str);
-            }
-            
-            //sin.nextLine();
-            String ret = sin.nextLine();
-            sout.close();
-            sin.close();
-            return ret;
-            
-        } catch (UnknownHostException uhe) {
-            // the host name provided could not be resolved
-            uhe.printStackTrace();
-            System.exit(1);
-            return null;
-        } catch (IOException ioe) {
-            // there was a standard input/output error (lower-level)
-            ioe.printStackTrace();
-            System.exit(1);
-            return null;
         }
     }
 
@@ -117,11 +105,34 @@ public class Client {
     }
 
     public static void main(String[] args) {
-    	String str = new String("Douglas");
         int port = DEFAULT_PORT_NUMBER;
         String machine = DEFAULT_MACHINE_NAME;
         
+        int argNdx = 0;
+        
+        while (argNdx < args.length) {
+            String curr = args[argNdx];
+
+            if (curr.equals(ARG_PORT)) {
+              ++argNdx;
+
+              String numberStr = args[argNdx];
+              port = Integer.parseInt(numberStr);
+            } else if (curr.equals(ARG_MACHINE)) {
+              ++argNdx;
+              machine = args[argNdx];
+            } else {
+
+              // if there is an unknown parameter, give usage and quit
+              System.err.println("Unknown parameter \"" + curr + "\"");
+              usage();
+              System.exit(1);
+            }
+
+            ++argNdx;
+          }
+        
         Client myClient = new Client(machine, port);
-        System.out.println(myClient.Respond(str));
+        myClient.run();
     }
 }
