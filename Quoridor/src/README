@@ -16,15 +16,18 @@ force use of setters/getters (accessors/mutators)
 
 comments:
     - top of document (template)
-      /* 
+      /*
        * name of file:
        * Authors: <list of authors, comma seperated>
        * Last updated: <date> <time> <by author name>
        * <Detailed description of file, could be one or more paragraphs>
        */
     
-    - Method commenting
-        // <one or more lines like this>
+    - Class commenting - this needs to be right above the class
+        /** <one or more lines like this> */
+
+    - Method commenting - this needs to be right above the method
+        /** <one or more lines like this> */
 
     - Working area
       /* FIX ME */
