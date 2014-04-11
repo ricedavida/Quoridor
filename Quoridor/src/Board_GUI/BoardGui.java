@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/** This File builds the GUI for the Quoridor game.  It passes and reads strings to the back end so the board state will change. */
+/** @author David Rice This File builds the GUI for the Quoridor game.  It passes and reads strings to the back end so the board state will change. */
 public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	final static boolean RIGHT_TO_LEFT = false;
 	private int players; //how many players will the game originally start with

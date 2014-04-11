@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import Board.Board;
 
-/** This File will create an end of game dialogue for the Quoridor game.  It will create a new game or end the game based on user input. */
+/** @author David Rice This File will create an end of game dialogue for the Quoridor game.  It will create a new game or end the game based on user input. */
 public class GameEnd {
 
 	/** Create a win state by passing the constructor the player count(int), the winning player(int) and the BoardGui */
