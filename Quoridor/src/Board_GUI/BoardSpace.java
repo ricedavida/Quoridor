@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/** @author David Rice This File will create a BoardSpace for the Quoridor game.  It will represent where a given player is on the board. */
+/** This File will create a BoardSpace for the Quoridor game.  It will represent where a given player is on the board. */
 public class BoardSpace extends JButton{
 	private String id; // the name of the BoardSpace
 	private boolean clicked = false; // is there a player in the space

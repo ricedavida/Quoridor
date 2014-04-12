@@ -10,7 +10,7 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
-/** @author David Rice This File will create an Intersect for the Quoridor game.  It will control where a wall can be placed on the board. */
+/** This File will create an Intersect for the Quoridor game.  It will control where a wall can be placed on the board. */
 public class Intersect extends JButton {
 	private String id; // the name of the intersect
 	private int wall = 0; // which state the wall is in
