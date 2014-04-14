@@ -32,6 +32,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 	private String submitMove = null;
 	private BoardSpace button = null;
 	private Intersect inter = null;
+	private GuiControl control = new GuiControl();
 	
 	/** Space will holds an ArrayList of BoardSpace, it stores the state of all spaces on the board */
 	public ArrayList<BoardSpace> space = new ArrayList<BoardSpace>();
@@ -162,7 +163,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		}
 
 		// This sets the initial possible moves for player 1
-		paintPos(0);
+		control.paintPos(0, board, space);
 
 		pane.add(panel);
 
@@ -199,47 +200,6 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		submit.addActionListener(this);
 		grid.add(submit);
 		pane.add(grid);
-	}
-
-	/** Paint the position of a player, by passing it a player #(int) */
-	public void paintPos(int player) {
-		// This sets the initial possible moves for player 1
-		int[] pos = board.getPossible(player);
-
-		for (int i = 0 ; i < pos.length ; i++) {
-			if (board.victorySoon(board.getCurrPlayer(), pos[i])) {
-				space.get(pos[i]).setColor(Color.MAGENTA);
-				space.get(pos[i]).setPotential(true);
-				space.get(pos[i]).repaint();
-			} else { 
-				space.get(pos[i]).setColor(board.getPlayer(board.getCurrPlayer()).getColor());
-				space.get(pos[i]).setPotential(true);
-				space.get(pos[i]).repaint();
-			}
-		}
-	}
-
-	/** Remove paint from the position of a player, by passing it a player #(int) */
-	public void removePos(int player) {
-		// This sets the initial possible moves for player 1
-		int[] pos = board.getPossible(player);
-		for (int i = 0 ; i < pos.length ; i++) {
-			space.get(pos[i]).setPotential(false);
-			space.get(pos[i]).repaint();
-		}
-	}
-
-	/** Remove paint from the position of a player, by passing it a player #(int) and passing the current space (int) */
-	public void removeOldMoves(int player, int currSpace) {
-		// This sets the initial possible moves for player 1
-		int[] pos = board.getPossible(player);
-		for (int i = 0 ; i < pos.length ; i++) {
-			space.get(pos[i]).setClicked(false);
-			space.get(pos[i]).repaint();
-		}
-		space.get(currSpace).setClicked(false);
-		space.get(currSpace).repaint();
-
 	}
 
 	/** This paint method will draw the background image onto the board */
@@ -370,7 +330,7 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 
 	/** Submit a space */
 	public void submitSpace() {
-		removePos(board.getCurrPlayer());
+		control.removePos(board.getCurrPlayer(), board, space);
 		space.get(currentPosition).setPotential(false);
 		space.get(currentPosition).setLastSpace(false);
 		space.get(currentPosition).repaint();
@@ -382,15 +342,6 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 
 		submitMove = null;
 		placed = null;
-	}
-
-	/** Switch current player */
-	public void iteratePlayers() {
-		if (players == 4) {
-			board.setCurrPlayer((board.getCurrPlayer()+1)%4);
-		} else {
-			board.setCurrPlayer((board.getCurrPlayer()+1)%2);
-		}
 	}
 	
 	@Override
@@ -407,8 +358,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 				button.setClicked(true);
 				currentPosition = board.getPos(board.getCurrPlayer());
 
-				removeOldMoves(board.getCurrPlayer(), currentPosition);
-				paintPos(board.getCurrPlayer());
+				control.removeOldMoves(board.getCurrPlayer(), currentPosition, board, space);
+				control.paintPos(board.getCurrPlayer(), board, space);
 
 				if (space.get(currentPosition).equals(space.get(newPosition))) {
 					deselectSpace(currentPosition);	
@@ -444,15 +395,15 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 						if (board.victorySoon(board.getCurrPlayer(), board.getPos(board.getCurrPlayer()))) {
 							GameEnd end = new GameEnd(board.getPlayerCount(), board.getCurrPlayer(), this);
 						} else {
-							iteratePlayers();
-							paintPos(board.getCurrPlayer());
+							control.iteratePlayers(board, players);
+							control.paintPos(board.getCurrPlayer(), board, space);
 						}
 					}
 				} else if (inter != null) {	// handle walls		
 					System.out.println("got here");
 
 					int curr = board.getPos(board.getCurrPlayer());
-					removePos(board.getCurrPlayer());
+					control.removePos(board.getCurrPlayer(), board, space);
 					space.get(curr).repaint();
 
 					if (inter.getWall() == 1) { // set horizontal
@@ -461,8 +412,8 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 						submitVWall();
 					}
 
-					iteratePlayers();
-					paintPos(board.getCurrPlayer());
+					control.iteratePlayers(board, players);
+					control.paintPos(board.getCurrPlayer(), board, space);
 				}
 			}
 		}
@@ -483,14 +434,12 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 			g.drawImage(image, 0, 0, null);
 		}
 	}
-
 	
 	@Override
 	/** this will change the text color on the Submit button to green when the mouse is over the button */
 	public void mouseEntered(MouseEvent e) {
 		submit.setForeground(Color.GREEN);
 	}
-
 	
 	@Override
 	/** this will change the text color on the Submit button to white when the mouse is not over the button */
@@ -498,7 +447,6 @@ public class BoardGui extends JFrame implements ActionListener, MouseListener{
 		submit.setForeground(Color.WHITE);
 	}
 
-	
 	@Override
 	/** NOT CURRENTLY USED */
 	public void mouseClicked(MouseEvent e) {
