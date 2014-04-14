@@ -1,7 +1,6 @@
 package AI;
-
 import java.io.*;
-
+/** AI_Methods: The bulk of the AI, including fastest and longest paths along with AI strategies */
 public class AI_Methods {
 	//String Array to represent board
 	static String board[][]={
@@ -21,6 +20,7 @@ public class AI_Methods {
 	//list of all possible moves
 	static String list,fastestPathRight="",fastestPathLeft="";
 	
+	/** allPossibleMoves: Takes in the string name of a pawn finds it and returns all its possible moves as a String */
 	public static String allPossibleMoves(String pawn){
 		list = "";
 		for(int i=0; i<81; i++)
@@ -31,6 +31,7 @@ public class AI_Methods {
 		return list;
 	}
 	
+	/** currentPositionOfPawn: Takes in a string of the pawn to be found and returns its Int location */
 	public static int currentPositionOfPawn(String pawn){
 		int pos = -1;
 		for(int i=0; i<81; i++)
@@ -40,6 +41,7 @@ public class AI_Methods {
 		return pos;
 	}
 
+	/** allPossibleMovesInt: Takes in the string name of a pawn finds it and returns all its possible moves as an Int */
 	public static int[] possiblePawnMovesInt(int i){
 		int[] moves = new int[5];
 		moves[0] = i;
@@ -69,6 +71,7 @@ public class AI_Methods {
 		}
 		return moves;
 	}
+	/** possiblePawnMoves: Takes in the integer position of the pawn and returns all its moves as a String */
 	public static String possiblePawnMoves(int i){
 		list="";
 		String oldPiece;
@@ -89,7 +92,7 @@ public class AI_Methods {
 		//need to add Jumps
 		return list;
 	}
-	
+	/** fastestPathLeft: Takes the integer position of the pawn and returns the fastest path to its destination favoring moving up and left*/
 	public static String fastestPathLeft(int position){
 		int moves[] = possiblePawnMovesInt(position);
 		if(position == 1){System.out.println("Fastest Path Left:");
@@ -97,25 +100,23 @@ public class AI_Methods {
 		
 		else if(moves[1]!=-1){//moving up
 				fastestPathLeft += position+"^"+moves[1]+" ";
-				System.out.print(fastestPathLeft);
 				fastestPathLeft(moves[1]);
 				return fastestPathLeft;
 		} 
 		else if(moves[3]!=-1){//moving left
 			fastestPathLeft += position+"<"+moves[3]+" ";
-			System.out.print(fastestPathLeft);
 			fastestPathLeft(moves[3]);
 			return fastestPathLeft;
 		}
 		else if(moves[4]!=-1){//moving right
 			fastestPathLeft += position+">"+moves[4]+" ";
 			fastestPathLeft(moves[4]);
-			System.out.print(fastestPathLeft);
 			return fastestPathLeft;
 		}
 		return "Hope you never see this.";
 	}
 	
+	/** fastestPathRight: Takes the integer position of the pawn and returns the fastest path to its destination favoring moving up and right*/
 	public static String fastestPathRight(int position){
 		int moves[] = possiblePawnMovesInt(position);
 		if(position == 7){System.out.println("Fastest Path Right:");
@@ -138,10 +139,13 @@ public class AI_Methods {
 		}
 		return "Hope you never see this.";
 	}
+	
+	/** viableMove: Is passed a move and returns true or false based on its viability*/
 	public static boolean viableMove(){
 		return true;
 	}
 
+	/** Main method to test AI functionality alone*/
 	public static void main(String args[]){
 		String a = "Shit";
 		System.out.println("Enter a pawn to find moves for:");
