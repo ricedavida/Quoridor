@@ -60,6 +60,24 @@ public class BoardTester extends TestCase{
 		String possibleAfterMove = "12 2 4 ";
 		assertEquals(possibleAfterMove, testPlayerOneMoveLeftThenPossible(grid));
 	}
+	@Test
+	public void testPlayerOneVertWallLeft() throws Exception{
+		Board grid = new Board(2);
+		String possibleAfterWall ="13 5 ";
+		assertEquals(possibleAfterWall, testPlayerOneVertWallLeft(grid));
+	}
+	@Test
+	public void testPlayerOneVertWallRight() throws Exception{
+		Board grid = new Board(2);
+		String possibleAfterWall = "13 3 ";
+		assertEquals(possibleAfterWall, testPlayerOneVertWallRight(grid));
+	}
+	@Test
+	public void testPlayerOneHorizWall() throws Exception{
+		Board grid = new Board(2);
+		String possibleAfterWall = "3 5 ";
+		assertEquals(possibleAfterWall, testPlayerOneHorizWall(grid));
+	}
 	//test that board is created to proper x dimensions.
 	private int getBoardSize(Board grid){
 		return grid.getSizeOfBoard();
@@ -122,4 +140,35 @@ public class BoardTester extends TestCase{
 		}
 		return posslist;
 	}
+	private String testPlayerOneVertWallLeft(Board grid){
+		int player = 0;
+		String possList = "";
+		grid.setWall(player,  "3V");
+		int [] poss = grid.getPossible(player);
+		for(int i = 0; i < poss.length; i++){
+			possList+=poss[i] + " ";
+		}
+		return possList;
+	}
+	private String testPlayerOneVertWallRight(Board grid){
+		int player = 0;
+		String possList = "";
+		grid.setWall(player, "4V");
+		int [] poss = grid.getPossible(player);
+		for(int i = 0; i < poss.length; i++){
+			possList+=poss[i] + " ";
+		}
+		return possList;
+	}
+	private String testPlayerOneHorizWall(Board grid){
+		int player = 0; 
+		String possList = "";
+		grid.setWall(player,  "3H");
+		int [] poss = grid.getPossible(player);
+		for(int i = 0; i < poss.length; i++){
+			possList+=poss[i] + " ";
+		}
+		return possList;
+	}
+	
 }
