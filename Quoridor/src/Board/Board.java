@@ -73,19 +73,25 @@ public class Board {
 			playerList[i] = new Players(i, players);
 		if(players == 2){
 			//player 1
-			playingGrid[4].hasPawn = true; 
+			//playingGrid[4].hasPawn = true; 
+			playingGrid[playerList[0].getPos()].hasPawn = true;
 			//player 2
-			playingGrid[76].hasPawn = true;
+			//playingGrid[76].hasPawn = true;
+			playingGrid[playerList[1].getPos()].hasPawn = true;
 		}
 		else if(players == 4){
 			// player 1
 			playingGrid[4].hasPawn = true;
+			playingGrid[playerList[0].getPos()].hasPawn = true;
 			// player 2
-			playingGrid[72].hasPawn = true;
+			//playingGrid[76].hasPawn = true;
+			playingGrid[playerList[1].getPos()].hasPawn = true;
 			// player 3
-			playingGrid[36].hasPawn = true;
+			//playingGrid[36].hasPawn = true;
+			playingGrid[playerList[2].getPos()].hasPawn = true;
 			// player 4
-			playingGrid[44].hasPawn = true;
+			//playingGrid[44].hasPawn = true;
+			playingGrid[playerList[3].getPos()].hasPawn = true;
 		}
 		else{
 			System.out.println("Invalid player configuration.");
@@ -339,11 +345,11 @@ public class Board {
 		// 20 walls is the total number of walls in any game
 		// not all can be in play
 		int wallNumber = 0;
-		String [] wlist = new String[wallNumber];
+		String [] wlist = new String[20];
 		int inPlay = wallList.size();
 		for(int i = 0; i < inPlay; i++){
 			wlist[i] = wallList.get(i).name;
-		wallNumber ++;
+			wallNumber ++;
 		}
 		for(int i = wallNumber; i < 20; i++){
 			wlist[i] = "z0";
