@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import Players.Players;
 
-/** This is the Back-end of the game, every wall, and move and space is acknowledged by this board, andupdated accordingly*/
+/** This is the Back-end of the game, every wall, and move and space is acknowledged by this board, and updated accordingly*/
 public class Board {
 	//board will consist of spaces, as defined by inner class
 	/**
@@ -31,7 +31,7 @@ public class Board {
 			canGo[3] = true; // east
 		}
 	}
-	/**wall: Represents a wall on the board. there is a limit of 20 on one game board*/
+	/**wall: Represents a wall on the board. there is a limit of 20 walls on one game board*/
 	class wall{
 		int[] spacesAffected;
 		String name;
@@ -167,7 +167,7 @@ public class Board {
 	// end test constructor.		
 	}
 	
-	/** checkSpace: checks to see if the space at index (x) is occupied by a pawn, then returns true if occupied, and false if not.*/
+	/** checkSpace: Checks to see if the space at index (x) is occupied by a pawn, then returns true if occupied, and false if not.*/
 	public boolean checkSpace(int x){
 		if(playingGrid[x].hasPawn)
 			return true;
@@ -175,14 +175,14 @@ public class Board {
 			return false;
 	}
 	
-	/**getPlayer: returns the Player in the list, based off of the id.*/
+	/**getPlayer: Returns the Player in the list, based off of the id.*/
 	public Players getPlayer(int playerId){
 		
 		return playerList[playerId];
 	}
 
 	// POSSIBLE SPOT FOR PLAYERid ERROR
-	/**getPos: return the position of the (playerId), if the player has not been kicked.*/
+	/**getPos: Returns the position of the (playerId), if the player has not been kicked.*/
 	public int getPos(int playerId){
 		if(!playerList[playerId].getKickStatus())
 			return (playerList[playerId].getPos());
@@ -191,6 +191,7 @@ public class Board {
 	}
 
 	// POTENTIAL PLAYERID ERROR
+	/**setPos: Checks the position to see if a move by a player is legal. if it is, then it will move them there*/
 	public void setPos(int playerId, int pos){
 		// add move legality check
 		// if legal, then move
@@ -204,19 +205,24 @@ public class Board {
 			}
 		}
 	}
+	
+	/**getPlayerCount: Returns the number of players*/
 	public int getPlayerCount(){
 		return numPlayers;
 	}
 	
+	/**getCurrPlayer: Returns the player that is currently being observed*/
 	public int getCurrPlayer(){
 		return playerNow;
 	}
 	
+	/**setCurrPlayer: sets the next player to be observed*/
 	public void setCurrPlayer(int playerId) {
 		playerNow = playerId;
 	}
 	
 	// POTENTIAL PLAYERID ERROR
+	/**getPossible: constructs an array of possible moves if the player has not been kicked. If the player has been kicked, returns null*/
 	public int[] getPossible(int playerId){
 		// THIS IS AN IMPORTANT METHOD	
 		// players have some number of spaces around them that are possible destinations
@@ -313,6 +319,7 @@ public class Board {
 	}
 
 	// POTENTIAL PLAYERID ERROR
+	/**setWall: Returns a String, and places a wall if legal.*/
 	public String setWall(int playerId, String w){
 		if(playerList[playerId].getKickStatus())
 			return "player "+playerId+" is out";
@@ -332,6 +339,7 @@ public class Board {
 				return "wall" + w + "is not legal";
 		}
 	}
+	/**getWall: Returns the wall count of the player requested*/
 	// POTENTIAL PLAYERID ERROR
 	public int getWallCount(int playerId){
 		if(playerList[playerId].getKickStatus())
@@ -342,7 +350,7 @@ public class Board {
 
 	// putting kick function here. making it public for now, but will talk to group about who dose kicking
 	// in this form. it is a possible playerId error.
-
+	/**kick: Kicks the requested player, and sets haspawn of the space they were on to false.*/
 	public void kick(int playerId){
 		int pos = playerList[playerId].getPos();
 		playingGrid[pos].hasPawn = false;
@@ -354,6 +362,7 @@ public class Board {
 	// i.e. e7h for wall with northwest corner at e7 h or v 
 	// invalid or empty walls are shown as z0
 	// TEST THIS MUCH
+	/** getWalls: Returns an Array of Strings containing the positions of walls*/
 	public String[] getWalls(){
 		// 20 walls is the total number of walls in any game
 		// not all can be in play
@@ -378,6 +387,8 @@ public class Board {
 	// important note!
 	// the sides of the board treat the edges like walls
 	// all spaces are separated by a space.
+	
+	/** getBoardState: Returns a String representation of the board with 'w' representing walls and '0' representing empty space.*/
 	public String getBoardState(){
 		String boardBuffer = "";
 		for(int i = 0; i < playingGrid.length; i++){
@@ -395,6 +406,9 @@ public class Board {
 		}
 		return boardBuffer;
 	}
+	/** playerAt: Returns the player number of the player that is at the specified position. If there are no players
+	 * at the position it returns -1.
+	 */
 	public int playerAt(int pos){
 		int playerYouWant = -1;
 		for( int i = 0; i < playerList.length; i++){
