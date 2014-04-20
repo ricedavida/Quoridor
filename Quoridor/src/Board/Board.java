@@ -576,10 +576,10 @@ public class Board {
 		// scratch that. visit first from calling method, then once that method is done, have it do the unvisit
 		//playingGrid[s].visited = true;
 		ArrayList<Integer> posSpaces = new ArrayList<Integer>();
-		if((s-9)>=0 && (s+9) <=80 && !playingGrid[s-9].visited && playingGrid[s].canGo[0]){
+		if((s-9)>=0 && (s-9) <=80 && !playingGrid[s-9].visited && playingGrid[s].canGo[0]){
 			posSpaces.add(s-9);
 		}
-		if((s+9)<=80 && (s-9)>=0 && !playingGrid[s+9].visited && playingGrid[s].canGo[1]){
+		if((s+9)<=80 && (s+9)>=0 && !playingGrid[s+9].visited && playingGrid[s].canGo[1]){
 			posSpaces.add(s+9);
 		}
 		if((s-1)>=0 && (s-1)<=80 && !playingGrid[s-1].visited && playingGrid[s].canGo[2]){

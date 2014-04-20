@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import Board.Board;
@@ -77,6 +79,12 @@ public class BoardTester extends TestCase{
 		Board grid = new Board(2);
 		String possibleAfterWall = "3 5 ";
 		assertEquals(possibleAfterWall, testPlayerOneHorizWall(grid));
+	}
+	@Test
+	public void testSpacePossibleNoWallCorners() throws Exception{
+			Board grid = new Board(2);
+			String possible = "[9, 1, 17, 7, 63, 73, 71, 79]";
+			assertEquals(possible, testSpacePossibleNoWallCorners(grid));
 	}
 	//test that board is created to proper x dimensions.
 	private int getBoardSize(Board grid){
@@ -169,6 +177,26 @@ public class BoardTester extends TestCase{
 			possList+=poss[i] + " ";
 		}
 		return possList;
+	}
+	private String testSpacePossibleNoWallCorners(Board grid){
+		ArrayList <Integer> all = new ArrayList <Integer>();
+		int [] nw = grid.possibleFromSpace(0);
+		int [] ne = grid.possibleFromSpace(8);
+		int [] sw = grid.possibleFromSpace(72);
+		int [] se = grid.possibleFromSpace(80);
+		for(int i = 0; i < nw.length; i++){
+				all.add(nw[i]);
+		}
+		for(int i = 0; i < ne.length; i++){
+			all.add(ne[i]);
+		}
+		for(int i = 0; i < sw.length; i++){
+			all.add(sw[i]);
+		}
+		for(int i = 0; i < se.length; i++){
+			all.add(se[i]);
+		}
+		return all.toString();
 	}
 	
 }
