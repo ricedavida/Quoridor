@@ -60,11 +60,11 @@ public class Board {
 		for(int i = 0; i < playingGrid.length; i++){
 			if(i >=0 && i <=8)
 				playingGrid[i].canGo[0] = false;
-			else if(i >=72 && i <= 80)
+			if(i >=72 && i <= 80)
 				playingGrid[i].canGo[1] = false;
-			else if(i % 9 == 8)
+			if(i % 9 == 8)
 				playingGrid[i].canGo[3] = false;
-			else if (i % 9 == 0)
+			if (i % 9 == 0)
 				playingGrid[i].canGo[2] = false;
 		}
 		for(int i = 0; i < players; i++ )
@@ -312,7 +312,9 @@ public class Board {
 			if(canPlace){
 				placeWall(w);
 				playerList[playerId].wallDec();
+				System.out.println("wall "+ w +" placed");
 				return "wall "+w+ "placed";
+				
 				// wall list updated when placewall called
 			}
 			else
@@ -382,6 +384,39 @@ public class Board {
 		}
 		return boardBuffer;
 	}
+	public int playerAt(int pos){
+		int playerYouWant = -1;
+		for( int i = 0; i < playerList.length; i++){
+			if(playerList[i].getPos() == pos)
+				playerYouWant = i;
+		}
+		return playerYouWant;
+	}
+	// call this on a player to check that they have won.
+	// looks at the array of win positions in the player object
+	// compare the current position to the array of win positions. 
+	// return true if the player passed in has reached a win square
+	// return false if the player passed has not reached a win state
+	public boolean playerHasWon(int playerId){
+		boolean winFlag = false;
+		int [] winList = playerList[playerId].getEnd();
+		for(int i = 0; i < winList.length; i++){
+			if(playerList[playerId].getPos() == winList[i])
+				winFlag = true;
+		}
+		return winFlag;
+	}
+	// add method to check to see if a space is in a player's win set.
+	public boolean victorySoon(int playerId, int space){
+		int [] winSpaces = playerList[playerId].getEnd();
+		boolean flag = false;
+		for(int i = 0; i < winSpaces.length; i++){
+			if(space == winSpaces[i])
+				flag = true;
+		}
+		return flag;
+	}
+	
 
 	// here there be helper functions. all private. 
 	// from here on, all player id are form internal function, all coded knowing that
@@ -445,22 +480,22 @@ public class Board {
 		//*******
 		// no-fucntional path algorithm
 		// *****
-	/*	
-		placeWall(w);
-		int pathCount = 0; 
-		for(int i = 0; i < playerList.length; i++){
-			if(!playerList[i].getKickStatus()){
-				int pathWin = pathChecker(playerId, playerList[i].getPos());
-				if(pathWin != 0)
-					pathCount++;
-			}
-			unvisit();
-		}
-		if(pathCount != this.getPlayerCount())
-			return false;
-		removeWall(w);
-	*/	
-	
+		/*
+		 * here is how this will work
+		 * place the wall
+		 * then, from a giver player's position, find all the spaces they can get to from that pos
+		 * - this uses the method below, possible from space.
+		 * -recursive
+		 * 		set space as visited
+		 * 		call possible from space on a space
+		 * 		call on all those spaces
+		 * stops when passed a visited space, or is a win space
+		 * once done, should have a list of all the spaces that a position could get to
+		 * run through the player's win list
+		 * if there are no winning positions in the possible list, the wall is a boxed in wall
+		 * do for all players with that wall
+		 * 
+		 */
 		return true;
 
 	}
@@ -524,108 +559,31 @@ public class Board {
 		}
 		else
 			System.out.println("Somebody tried to remove some kind of bad wall");
-
+	}
+	// need a method to find the possible spaces form a given space
+	public int[] possibleFromSpace(int s){
+		// scratch that. visit first from calling method, then once that method is done, have it do the unvisit
+		//playingGrid[s].visited = true;
+		ArrayList<Integer> posSpaces = new ArrayList<Integer>();
+		if((s-9)>=0 && (s+9) <=80 && !playingGrid[s-9].visited && playingGrid[s].canGo[0]){
+			posSpaces.add(s-9);
+		}
+		if((s+9)<=80 && (s-9)>=0 && !playingGrid[s+9].visited && playingGrid[s].canGo[1]){
+			posSpaces.add(s+9);
+		}
+		if((s-1)>=0 && (s-1)<=80 && !playingGrid[s-1].visited && playingGrid[s].canGo[2]){
+			posSpaces.add(s-1);
+		}
+		if((s+1)>=0 && (s+1) <=80 && !playingGrid[s+1].visited && playingGrid[s].canGo[3]){
+			posSpaces.add(s+1);
+		}
+		int [] ret = new int[posSpaces.size()];
+		for(int i = 0; i< posSpaces.size(); i++){
+			ret[i] = posSpaces.get(i);
+		}
+		return ret;
 	}
 
-	private int pathChecker(int player, int pos){
-		// mark this node as visited
-		playingGrid[pos].visited = true;
-		// return true if this is in player's win set
-		boolean flag = false;
-		int []tempEnd = playerList[player].getEnd();
-		for(int i = 0; i < tempEnd.length; i++){
-			if(pos == tempEnd[i]){
-				flag = true;
-			}
-		}
-		if(flag)
-			return 1;
-		else{
-			// construct set of possible moves
-			int[] possible = getPossible(player);
-			int possCount = 0;
-			for(int i =0; i < possible.length; i++){
-				if(!playingGrid[possible[i]].visited)
-					possCount++;
-			}
-			if(possCount <=0)
-				return 0;
-			else{
-
-				int t;
-				t = 0;
-				// INSTEAD OF FOR, DO EM SEQUENTIAL
-				for(int i = 0; i < possible.length; i++){
-					t= t+ pathChecker(player, possible[i]);
-				}
-				// return false if all nearby are visited or no possible way off square
-				// else return pathChecker(player pos) || pathChecker(player pos)|| ... 
-				return t;
-			}
-		}
-	}
-	private int playerOnePathCheck(int pos){
-		if(this.playerHasWon(0))
-			return 1;
-		else{
-			int [] possib = this.getPossible(0);
-			int [] distance = new int [possib.length];
-			for(int i = 0; i < distance.length; i++)
-				distance[i] = Integer.MAX_VALUE;
-			int [] end = playerList[0].getEnd();
-			for(int i = 0; i < possib.length; i++){
-				int tempDist =distance[i];
-				for(int j = 0; j < end.length; j++){
-					int temp = end[j] - possib[i];
-					if(temp <= tempDist){
-						tempDist = temp;
-					}
-					distance[j] = tempDist;
-				}
-			}
-			int goHere = 0;
-			int temp = distance[0];
-			for(int i = 0; i < distance.length; i++){
-				if(temp > distance[i]){
-					goHere = i;
-				}
-			}
-			return 0 + playerOnePathCheck(possib[goHere]);
-		}
-	}
-
-	public int playerAt(int pos){
-		int playerYouWant = -1;
-		for( int i = 0; i < playerList.length; i++){
-			if(playerList[i].getPos() == pos)
-				playerYouWant = i;
-		}
-		return playerYouWant;
-	}
-	// call this on a player to check that they have won.
-	// looks at the array of win positions in the player object
-	// compare the current position to the array of win positions. 
-	// return true if the player passed in has reached a win square
-	// return false if the player passed has not reached a win state
-	public boolean playerHasWon(int playerId){
-		boolean winFlag = false;
-		int [] winList = playerList[playerId].getEnd();
-		for(int i = 0; i < winList.length; i++){
-			if(playerList[playerId].getPos() == winList[i])
-				winFlag = true;
-		}
-		return winFlag;
-	}
-	// add method to check to see if a space is in a player's win set.
-	public boolean victorySoon(int playerId, int space){
-		int [] winSpaces = playerList[playerId].getEnd();
-		boolean flag = false;
-		for(int i = 0; i < winSpaces.length; i++){
-			if(space == winSpaces[i])
-				flag = true;
-		}
-		return flag;
-	}
 	private void unvisit(){
 		for(int i = 0; i < playingGrid.length; i++)
 		{
