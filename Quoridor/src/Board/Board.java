@@ -8,8 +8,13 @@ import java.util.ArrayList;
 
 import Players.Players;
 
+/** This is the Back-end of the game, every wall, and move and space is acknowledged by this board, andupdated accordingly*/
 public class Board {
 	//board will consist of spaces, as defined by inner class
+	/**
+	 * Space: Represents each square of the board; each one holds information regarding possible movements to another space
+	 * as well as if there is a pawn occupying the space.
+	 */
 	class space{
 		boolean hasPawn;
 		boolean visited; 
@@ -26,6 +31,7 @@ public class Board {
 			canGo[3] = true; // east
 		}
 	}
+	/**wall: Represents a wall on the board. there is a limit of 20 on one game board*/
 	class wall{
 		int[] spacesAffected;
 		String name;
@@ -160,18 +166,23 @@ public class Board {
 		}
 	// end test constructor.		
 	}
+	
+	/** checkSpace: checks to see if the space at index (x) is occupied by a pawn, then returns true if occupied, and false if not.*/
 	public boolean checkSpace(int x){
 		if(playingGrid[x].hasPawn)
 			return true;
 		else
 			return false;
 	}
+	
+	/**getPlayer: returns the Player in the list, based off of the id.*/
 	public Players getPlayer(int playerId){
 		
 		return playerList[playerId];
 	}
 
 	// POSSIBLE SPOT FOR PLAYERid ERROR
+	/**getPos: return the position of the (playerId), if the player has not been kicked.*/
 	public int getPos(int playerId){
 		if(!playerList[playerId].getKickStatus())
 			return (playerList[playerId].getPos());
