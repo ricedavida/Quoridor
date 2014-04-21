@@ -1,6 +1,7 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -85,6 +86,15 @@ public class BoardTester extends TestCase{
 			Board grid = new Board(2);
 			String possible = "[9, 1, 17, 7, 63, 73, 71, 79]";
 			assertEquals(possible, testSpacePossibleNoWallCorners(grid));
+	}
+	@Test
+	public void testRecursivePaths() throws Exception{
+		Board grid = new Board(2);
+		String possible = "";
+		for(int i = 0; i < 81; i ++){
+			possible+= i+" ";
+		}
+		assertEquals(possible, testRecursivePaths(grid));
 	}
 	//test that board is created to proper x dimensions.
 	private int getBoardSize(Board grid){
@@ -198,5 +208,18 @@ public class BoardTester extends TestCase{
 		}
 		return all.toString();
 	}
-	
+	public String testRecursivePaths(Board grid){
+		ArrayList<Integer> allSpaces = grid.paths(0);
+		String ret= "";
+		Collections.sort(allSpaces);
+		ArrayList<Integer> removeDuplicates = new ArrayList<Integer>();
+		for(int i = 0; i < allSpaces.size(); i ++){
+			if(!removeDuplicates.contains(allSpaces.get(i)))
+				removeDuplicates.add(allSpaces.get(i));
+		}
+		for(int i = 0; i < removeDuplicates.size(); i++)
+			ret+=removeDuplicates.get(i)+" ";
+		System.out.println(removeDuplicates.size());
+		return ret;
+	}
 }

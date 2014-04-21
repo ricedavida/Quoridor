@@ -609,6 +609,23 @@ public class Board {
 		return ret;
 	}
 
+	public ArrayList<Integer> paths (int space){
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+		temp.add(space);
+		playingGrid[space].visited = true;
+		int [] future = this.possibleFromSpace(space);
+		if(future.length ==0){
+			return temp;
+		}
+		else{
+			for(int i = 0; i < future.length; i++){
+				temp.addAll(this.paths(future[i]));
+				}
+			}
+		//System.out.println(temp.toString());
+		return temp;
+	}
+
 	private void unvisit(){
 		for(int i = 0; i < playingGrid.length; i++)
 		{
