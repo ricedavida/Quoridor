@@ -1,5 +1,6 @@
 package AI;
 import java.io.*;
+import java.util.Arrays;
 /** AI_Methods: The bulk of the AI, including fastest and longest paths along with AI strategies */
 public class AI_Methods {
 	//String Array to represent board
@@ -14,9 +15,18 @@ public class AI_Methods {
 		{" "," "," "," "," "," "," "," "," "},
 		{" "," "," "," ","2"," "," "," "," "},
 	};
-	static int pPositionC, pPositionL,lastMove;
+	// static ints for positioning and move calculation
+	static int pPositionC, pPositionL,lastMove,x,l = 0, r = 0, f = 0, fl = 0, fr = 0;
+	
+	// ints to keep track of each players spots for quick recalls
 	int Player1,Player2,Player3,Player4;
-	int[] failedMoves = new int[81];
+	
+	//int array to keep track of moves made and moves that failed
+	static int[] failedMovesLeft = new int[81];
+	static int[] failedMovesRight = new int[81];
+	static int[] reverseL = new int[81];
+	static int[] reverseR = new int[81];
+	
 	//list of all possible moves
 	static String list,fastestPathRight="",fastestPathLeft="";
 	
@@ -95,23 +105,35 @@ public class AI_Methods {
 	/** fastestPathLeft: Takes the integer position of the pawn and returns the fastest path to its destination favoring moving up and left*/
 	public static String fastestPathLeft(int position){
 		int moves[] = possiblePawnMovesInt(position);
-		if(position == 1){System.out.println("Fastest Path Left:");
+		if(position == 0 || position == 1 || position == 2 || position == 3 || position == 4 || position == 5 || position == 6 || position == 7 || position == 8){System.out.println("Fastest Path Left:");
 		return "done";}//Should be if lastMove == winCondition
 		
-		else if(moves[1]!=-1){//moving up
-				fastestPathLeft += position+"^"+moves[1]+" ";
-				fastestPathLeft(moves[1]);
-				return fastestPathLeft;
+		else if(moves[1]!=-1 && Arrays.asList(reverseL).contains(moves[1]) == false && Arrays.asList(failedMovesLeft).contains(moves[1]) == false){//moving up
+			fastestPathLeft += position+"^"+moves[1]+" ";
+			fastestPathLeft(moves[1]);
+			reverseL[l] = position;
+			l++;
+			return fastestPathLeft;
 		} 
-		else if(moves[3]!=-1){//moving left
+		else if(moves[3]!=-1  && Arrays.asList(reverseL).contains(moves[1]) == false && Arrays.asList(failedMovesLeft).contains(moves[1]) == false){//moving left
 			fastestPathLeft += position+"<"+moves[3]+" ";
 			fastestPathLeft(moves[3]);
+			reverseL[l] = position;
+			l++;
 			return fastestPathLeft;
 		}
-		else if(moves[4]!=-1){//moving right
+		else if(moves[4]!=-1  && Arrays.asList(reverseL).contains(moves[1]) == false && Arrays.asList(failedMovesLeft).contains(moves[1]) == false){//moving right
 			fastestPathLeft += position+">"+moves[4]+" ";
 			fastestPathLeft(moves[4]);
+			reverseL[l] = position;
+			l++;
 			return fastestPathLeft;
+		}
+		else{
+			failedMovesLeft[fl] = position;
+			fl++;
+			
+			fastestPathLeft(reverseL[l-1]);
 		}
 		return "Hope you never see this.";
 	}
@@ -119,24 +141,31 @@ public class AI_Methods {
 	/** fastestPathRight: Takes the integer position of the pawn and returns the fastest path to its destination favoring moving up and right*/
 	public static String fastestPathRight(int position){
 		int moves[] = possiblePawnMovesInt(position);
-		if(position == 7){System.out.println("Fastest Path Right:");
+		if( position == 0 || position == 1 || position == 2 || position == 3 || position == 4 || position == 5 || position == 6 || position == 7 || position == 8){System.out.println("Fastest Path Right:");
 		return "done";}//Should be if lastMove == winCondition
 		
-		if(moves[1]!=-1){//moving up
+		if(moves[1]!=-1){//moving north
 			fastestPathRight += position+"^"+moves[1]+" ";
 			fastestPathRight(moves[1]);
+			reverseR[r] = position;
+			r++;
 			return fastestPathRight;
 		}
-		else if(moves[4]!=-1){//moving right
+		else if(moves[4]!=-1){//moving east
 			fastestPathRight += position+">"+moves[4]+" ";
 			fastestPathRight(moves[4]);
+			reverseR[r] = position;
+			r++;
 			return fastestPathRight;
 		}
-		else if(moves[3]!=-1){//moving left
+		else if(moves[3]!=-1){//moving west
 			fastestPathRight += position+"<"+moves[3]+" ";
 			fastestPathRight(moves[3]);
+			reverseR[r] = position;
+			r++;
 			return fastestPathRight;
 		}
+
 		return "Hope you never see this.";
 	}
 	
